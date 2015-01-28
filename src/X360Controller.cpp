@@ -2,7 +2,7 @@
  *  X360Controller.cpp
  *  	Takes in various user inputs and sends them out.
  *
- *  FRC Team 4139 - Easy As Pi
+ *  FRC Team 4139 - Easy as Pi
  *  	Author(s):
  */
 

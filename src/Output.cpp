@@ -2,7 +2,7 @@
  *  Output.cpp
  *  	Takes in various inputs and sends them to the appropriate outputs.
  *
- *  FRC Team 4139 - Easy As Pi
+ *  FRC Team 4139 - Easy as Pi
  *  	Author(s):
  */
 
