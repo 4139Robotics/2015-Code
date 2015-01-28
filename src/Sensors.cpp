@@ -1,5 +1,5 @@
 /*
- *  Sesnors.cpp
+ *  Sensors.cpp
  *  	Sends various data from the sensors.
  *
  *  FRC Team 4139 - Easy As Pi
