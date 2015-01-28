@@ -1,6 +1,6 @@
 FRC 4139 Robot Instructions
 ==================
-Instructions for the programming team of FRC 4139. This is written in Readme.md, which you can open with Notepad or some other text editor program and read just fine. Please commit/pull/push as needed. Dont forget to write meaningful commit comments, followed with your name. 
+Instructions for the programming team of FRC 4139. This is written in Readme.md, which you can open with Notepad or some other text editor program and read just fine. Please commit/pull/push as needed. Dont forget to write meaningful commit comments, followed with your name. Also don't forget to write your names in the comment block at the top of each file.
 
 Any object you use from the WPILib API should use a pointer, and don't forget to initialize, construct, etc these properly. 
 [WPILib Documentation](http://first.wpi.edu/FRC/roborio/release/docs/cpp/)
