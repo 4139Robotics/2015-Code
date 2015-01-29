@@ -3,18 +3,20 @@
  *  	Drives the robot.
  *
  *  FRC Team 4139 - Easy as Pi
- *  	Author(s):
+ *  	Author(s): Michael Yee and Anthony Nguyen
  */
 
 #include "WPILib.h"
+
+//TODO - NormalSpeed = HalfSpeed - TurboMode - FullSpeed - AccelerationCurve(Only in TurboMode)
+
 
 struct Wheels_In
 {
 	float xMovement, yMovement, rotation, gyroAngle;
 	// Forward/Backward, Left/Right, Rotating, Robot's Current Rotation
-	bool rotate;
-//	bool spinleft;
-//	bool spinright;
+	bool rotateleft;
+	bool rotateright;
 };
 
 struct Wheels_Out
@@ -28,7 +30,7 @@ class Wheels
 private:
 
 	RobotDrive *drive;
-	int state; // State 1: Normal  State 2: Turning  State 3: 180 Spin Left  State 4: 180 Spin Right
+	int drivestate; // State 1: Normal  State 2: TurboMode  State 3: CCW Turn  State 4: CW Turn
 
 
 public:
@@ -37,6 +39,8 @@ public:
 	{
 		drive = new RobotDrive(0,2,1,3) //frontLeft, rearLeft, frontRight, rearRight
 		state = 1;
+		drive->SetInvertedMotor(RobotDrive::kFrontLeftMotor, true); // 0 is front left wheel
+		drive->SetInvertedMotor(RobotDrive::kRearLeftMotor, true); // 2 is back left wheel
 
 	}
 
@@ -81,31 +85,6 @@ public:
 			{
 				input.yMovement == -1;
 			}
-
-			xmove = input.xMovement;
-			ymove = input.yMovement;
-
-		}
-		else if(state == 2)
-		{
-			if(input.xMovement > 1)
-			{
-				input.xMovement == 1;
-			}
-			else if(input.xMovement < -1)
-			{
-				input.xMovement == -1;
-			}
-
-			if(input.yMovement > 1)
-			{
-				input.yMovement == 1;
-			}
-			else if(input.yMovement < -1)
-			{
-				input.yMovement == -1;
-			}
-
 			if(input.rotation > 1)
 			{
 				input.rotation == 1;
@@ -118,7 +97,9 @@ public:
 			xmove = input.xMovement;
 			ymove = input.yMovement;
 			rotationspeed = input.rotation;
+
 		}
+
 		/*
 		else if(state == 3)
 		{
