@@ -2,7 +2,7 @@
  *  Wheels.cpp
  *  	Drives the robot.
  *
- *  FRC Team 4139 - Easy As Pi
+ *  FRC Team 4139 - Easy as Pi
  *  	Author(s):
  */
 

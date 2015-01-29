@@ -2,7 +2,7 @@
  *  Robot.cpp
  *  	The main robot code. Manages Input/Output and takes appropriate action based on what is sent/received.
  *
- *  FRC Team 4139 - Easy As Pi
+ *  FRC Team 4139 - Easy as Pi
  *  	Author(s): Elliot Yoon
  */
 

@@ -2,7 +2,7 @@
  *  Input.cpp
  *  	Sends out various inputs from the controller and sensors..
  *
- *  FRC Team 4139 - Easy As Pi
+ *  FRC Team 4139 - Easy as Pi
  *  	Author(s):
  */
 

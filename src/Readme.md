@@ -37,7 +37,7 @@ This is the main robot class. It will handle everything, and process them accord
 This class will manage all the components that receive and send data. So, you will be handling what you recieve from the Sensors and X360Controller class. Just set your out struct to whatever you get and return it.
 
 ### Sensors.cpp
-This class will receive values from the sensors, set the out struct to these values, and return it. Currently, we will have a gyroscope, the RoboRIO builtin accelerometer, and probably an ultrasonic sensor. We will also have a camera, but I will handle anything vision related.
+This class will receive values from the sensors, set the out struct to these values, and return it. Currently, we will have a gyroscope, the RoboRIO built in accelerometer, and probably an ultrasonic sensor. We will also have a camera, but I will handle anything vision related.
 
 ### X360Controller.cpp
 This class will handle the input received from the Xbox 360 controller. Use the Joystick class from the WPILib documentation. Controls are currently undetermined. For now, use the left stick for x and y. The POV hat should each set state to a different value (0 for the center, 1-8 for the outside). You must also set a deadzone; look it up.
