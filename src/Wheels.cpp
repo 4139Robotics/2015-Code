@@ -13,8 +13,8 @@ struct Wheels_In
 	float xMovement, yMovement, rotation, gyroAngle;
 	// Forward/Backward, Left/Right, Rotating, Robot's Current Rotation
 	bool rotate;
-	bool spinleft;
-	bool spinright;
+//	bool spinleft;
+//	bool spinright;
 };
 
 struct Wheels_Out
@@ -51,6 +51,7 @@ public:
 		{
 			state = 2;
 		}
+		/*
 		if(spinleft)
 		{
 			state = 3;
@@ -59,6 +60,7 @@ public:
 		{
 			state = 4;
 		}
+		*/
 
 		if(state == 1)
 		{
@@ -117,6 +119,7 @@ public:
 			ymove = input.yMovement;
 			rotationspeed = input.rotation;
 		}
+		/*
 		else if(state == 3)
 		{
 			input.xMovement = 0;
@@ -139,7 +142,7 @@ public:
 			rotationspeed = input.rotation;
 			input.gyroAngle = input.gyroAngle - 180;
 		}
-
+		*/
 
 		drive->MecanumDrive_Cartesian(xmove, ymove, rotationspeed, input.gyroAngle);
 		return WheelOutput();
