@@ -7,6 +7,7 @@
  */
 
 #include "WPILib.h"
+#include "math.h"
 
 struct X360Controller_In
 {
@@ -23,14 +24,18 @@ struct X360Controller_Out
 	float leftAnalogX,
 		  leftAnalogY,
 		  rightAnalogX,
-		  rightAnalogY;
+		  rightAnalogY,
+		  leftThrottle,
+		  rightThrottle;
 	//buttons
 	bool buttonA,
 	     buttonB,
 		 buttonX,
 		 buttonY,
 		 leftTrigger,
-		 rightTrigger;
+		 rightTrigger,
+		 back,
+		 start;
 };
 
 class X360Controller
@@ -56,20 +61,42 @@ public:
 	{
 
 		//setting sticks to general values
-		Output.leftAnalogX = stick->GetRawAxis(0);
-		Output.leftAnalogY = stick->GetRawAxis(1);
-		Output.rightAnalogX= stick->GetRawAxis(4);
-		Output.rightAnalogY= stick->GetRawAxis(5);
+		Output.leftAnalogX   = stick->GetRawAxis(0);
+		Output.leftAnalogY   = stick->GetRawAxis(1);
+		Output.leftThrottle  = stick->GetRawAxis(2);
+		Output.rightThrottle = stick->GetRawAxis(3);
+		Output.rightAnalogX  = stick->GetRawAxis(4);
+		Output.rightAnalogY  = stick->GetRawAxis(5);
 
 		//setting buttons to general functions
-		Output.buttonA	   =stick->GetRawButton(0);
-		Output.buttonB	   =stick->GetRawButton(1);
-		Output.buttonX	   =stick->GetRawButton(2);
-		Output.buttonY	   =stick->GetRawButton(3);
-		Output.leftTrigger =stick->GetRawButton(4);
-		Output.rightTrigger=stick->GetRawButton(5);
+		Output.buttonA	    = stick->GetRawButton(0);
+		Output.buttonB	    = stick->GetRawButton(1);
+		Output.buttonX	    = stick->GetRawButton(2);
+		Output.buttonY	    = stick->GetRawButton(3);
+		Output.leftTrigger  = stick->GetRawButton(4);
+		Output.rightTrigger = stick->GetRawButton(5);
+		Output.back			= stick->GetRawButton(6);
+		Output.start		= stick->GetRawButton(7);
 
 		return Output;
 	}
+
+
+	//signfinder, used for deadzone
+	float findSign(float num)
+	{
+			if (num > 0)
+				return 1;
+			else if (num < 0)
+				return -1;
+			else
+				return 0;
+		}
+
+		//Deadzone due to bad controllers
+		float ApplyDZ(float axis, float deadzone)
+		{
+			return fabs(axis) < deadzone ? 0 : (fabs(axis) - deadzone) / (1	- deadzone) * findSign(axis);
+		}
 
 };
