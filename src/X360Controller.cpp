@@ -48,6 +48,8 @@ private:
 
 public:
 
+	static const float DZ = .15;
+
 	X360Controller()
 	{
 		stick = new Joystick(1);
@@ -77,6 +79,11 @@ public:
 		Output.rightTrigger = stick->GetRawButton(5);
 		Output.back			= stick->GetRawButton(6);
 		Output.start		= stick->GetRawButton(7);
+
+
+		Output.Spin = UDLR->GetZ() / (Output.Grab ? 4 : 2);//ApplyDZ(UDLR->GetZ()/2, DZ);
+		Output.MoveX = ApplyDZ(UDLR->GetRawAxis(1) / (Output.Turbo ? 1 : 2), DZ) / (Output.Grab ? 2 : 1);
+		Output.MoveY = -ApplyDZ(UDLR->GetRawAxis(2) / (Output.Turbo ? 1 : 2),DZ) / (Output.Grab ? 2 : 1);
 
 		return Output;
 	}
