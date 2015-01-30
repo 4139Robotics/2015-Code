@@ -42,7 +42,7 @@ public:
         accel = new BuiltInAccelerometer(Accelerometer:kRange_4G);
         UpperLift = new DigitalInput(uint32_t 9999);
         LowerLift = new DigitalInput(uint32_t 9999);
-        Sonic = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,ULTRASONIC_TRIGGER_PULSE_INPUT);
+        Sanic = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,ULTRASONIC_TRIGGER_PULSE_INPUT);
     }
     Sensor_Output Run(Sensor_Input input) {
         Sensors_Output out;
