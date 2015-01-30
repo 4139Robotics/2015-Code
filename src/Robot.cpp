@@ -48,14 +48,14 @@ private:
 		Output_In outputIn;
 		Output_Out outputOut;
 
-		inputOut = input->Run(inputIn);
+		//inputOut = input->Run(inputIn);
 
 		outputIn.xMovement = inputOut.returnX;
 		outputIn.yMovement = inputOut.returnY;
 		outputIn.rotation = inputOut.returnRotation;
 		outputIn.rotate = inputOut.returnRotate;
 
-		outputOut = output->Run(outputIn);
+		//outputOut = output->Run(outputIn);
 	}
 
 	void TestPeriodic()

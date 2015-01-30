@@ -15,33 +15,35 @@ struct X360Controller_In
 
 struct X360Controller_Out
 {
-	float returnX, returnY, returnRotation;
+	float returnX,
+		  returnY,
+		  returnRotation;
 	bool returnRotate;
 };
 
 class X360Controller
 {
 private:
-	Joystick* UDLR;
+	Joystick* Stick;
 	X360Controller_Out Output;
-	float rightAnalogX,
-		  leftAnalogX,
-		  rightAnalogY,
-		  leftAnalogY;
+	float leftAnalogX,
+		  leftAnalogY,
+		  rightAnalogX,
+		  rightAnalogY;
 
 
 
 public:
 
-	X360Controller::X360Controller()
+	X360Controller()
 	{
-		UDLR = new Joystick(1);
-		leftAnalogX=UDLR->GetRawAxis(0);
-		leftAnalogY=UDLR->GetRawAxis(1);
-		rightAnalogX=UDLR->GetRawAxis(4);
-		rightAnalogY=UDLR->GetRawAxis(5);
+		Stick = new Joystick(1);
+		leftAnalogX = Stick->GetRawAxis(0);
+		leftAnalogY = Stick->GetRawAxis(1);
+		rightAnalogX= Stick->GetRawAxis(4);
+		rightAnalogY= Stick->GetRawAxis(5);
 	}
-	X360Controller_Out X360Controller::Run(X360Controller_In input)
+	X360Controller_Out Run(X360Controller_In input)
 	{
 
 
