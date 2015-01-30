@@ -26,4 +26,8 @@
 *.exe
 *.out
 *.app
+
+# Eclipse 
 /Debug/
+
+/.settings/language.settings.xml
