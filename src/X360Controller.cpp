@@ -7,6 +7,7 @@
  */
 
 #include "WPILib.h"
+#include "math.h"
 
 struct X360Controller_In
 {
@@ -49,5 +50,24 @@ public:
 
 		return Output;
 	}
+
+
+	//signfinder, used for deadzone
+	float findSign(float num)
+	{
+			if (num > 0)
+				return 1;
+			else if (num < 0)
+				return -1;
+			else
+				return 0;
+		}
+
+		//Deadzone due to bad controllers
+		float ApplyDZ(float axis, float deadzone)
+		{
+			return fabs(axis) < deadzone ? 0 : (fabs(axis) - deadzone) / (1
+					- deadzone) * findSign(axis);
+		}
 
 };
