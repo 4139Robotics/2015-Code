@@ -40,7 +40,7 @@ public:
         out.returnAccelY = accel->GetY();
         out.returnAccelZ = accel->GetZ();
         out.returnUpperLiftSwitch = UpperLift->Get();
-        out.returnLowerLiftSwitch = LOwerLift ->Get();
+        out.returnLowerLiftSwitch = LowerLift ->Get();
     }
     
     
