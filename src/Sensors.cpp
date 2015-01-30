@@ -25,7 +25,7 @@ private:
     DigitalInput *LowerLift;
     
 public:
-    Sensors::Sensors() {
+    Sensors() {
         gyro = new GyroSensor();
         accel = new BuiltInAccelerometer(Accelerometer:kRange_4G);
         UpperLift = new DigitalInput(uint32_t 9999);
@@ -41,6 +41,7 @@ public:
         out.returnAccelZ = accel->GetZ();
         out.returnUpperLiftSwitch = UpperLift->Get();
         out.returnLowerLiftSwitch = LowerLift ->Get();
+        return out;
     }
     
     
