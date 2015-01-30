@@ -30,11 +30,11 @@ struct Sensors_Out
 class Sensors
 {
 private:
-    GyroSensor* gyro;
+    GyroSensor *gyro;
     Accelerometer *accel;
     DigitalInput *UpperLift;
     DigitalInput *LowerLift;
-    Ultrasonic *Sonic;
+    Ultrasonic *Sanic;
     
 public:
     Sensors() {
@@ -42,7 +42,7 @@ public:
         accel = new BuiltInAccelerometer(Accelerometer:kRange_4G);
         UpperLift = new DigitalInput(uint32_t 9999);
         LowerLift = new DigitalInput(uint32_t 9999);
-        Sonic = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,ULTRASONIC_TRIGGER_PULSE_INPUT);
+        Sanic = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,ULTRASONIC_TRIGGER_PULSE_INPUT);
     }
     Sensor_Output Run(Sensor_Input input) {
         Sensors_Output out;
@@ -53,7 +53,7 @@ public:
         out.returnAccelZ = accel->GetZ();
         out.returnUpperLiftSwitch = UpperLift->Get();
         out.returnLowerLiftSwitch = LowerLift ->Get();
-        out.returnDistance = Sonic -> GetRangeInches();
+        out.returnDistance = Sanic -> GetRangeInches();
         return out;
     }
     
