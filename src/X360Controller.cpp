@@ -24,7 +24,7 @@ struct X360Controller_Out
 class X360Controller
 {
 private:
-	Joystick* Stick;
+	Joystick* stick;
 	X360Controller_Out Output;
 	float leftAnalogX,
 		  leftAnalogY,
@@ -37,15 +37,15 @@ public:
 
 	X360Controller()
 	{
-		Stick = new Joystick(1);
-		leftAnalogX = Stick->GetRawAxis(0);
-		leftAnalogY = Stick->GetRawAxis(1);
-		rightAnalogX= Stick->GetRawAxis(4);
-		rightAnalogY= Stick->GetRawAxis(5);
+		stick = new Joystick(1);
+
 	}
 	X360Controller_Out Run(X360Controller_In input)
 	{
-
+		leftAnalogX = stick->GetRawAxis(0);
+		leftAnalogY = stick->GetRawAxis(1);
+		rightAnalogX= stick->GetRawAxis(4);
+		rightAnalogY= stick->GetRawAxis(5);
 
 		return Output;
 	}
