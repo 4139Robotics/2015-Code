@@ -1,7 +1,16 @@
+/*
+ * Sensors.cpp
+        Sends various data from the sensors
+ *
+ *  FRC Team 4139 - Easy as Pi
+ *      Author(s): Rhea Bae & Jeffrey Chen
+ */
+
 #include "WPILib.h"
 #include "gyro.cpp"
 #include "BuiltInAccelerometer.h"
 #include <DigitalInput.h>
+#include <Ultrasonic.h>
 
 struct Sensors_In
 {
@@ -14,6 +23,8 @@ struct Sensors_Out
     float returnAccelX, returnAccelY, returnAccelZ;
     float returnDistance;
     bool returnUpperLiftSwitch, returnLowerLiftSwitch;
+    
+    
 };
 
 class Sensors
@@ -23,6 +34,7 @@ private:
     Accelerometer *accel;
     DigitalInput *UpperLift;
     DigitalInput *LowerLift;
+    Ultrasonic *Sonic;
     
 public:
     Sensors() {
@@ -30,7 +42,7 @@ public:
         accel = new BuiltInAccelerometer(Accelerometer:kRange_4G);
         UpperLift = new DigitalInput(uint32_t 9999);
         LowerLift = new DigitalInput(uint32_t 9999);
-        
+        Sonic = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,ULTRASONIC_TRIGGER_PULSE_INPUT);
     }
     Sensor_Output Run(Sensor_Input input) {
         Sensors_Output out;
@@ -41,6 +53,7 @@ public:
         out.returnAccelZ = accel->GetZ();
         out.returnUpperLiftSwitch = UpperLift->Get();
         out.returnLowerLiftSwitch = LowerLift ->Get();
+        out.returnDistance = Sonic -> GetRangeInches();
         return out;
     }
     
