@@ -88,8 +88,7 @@ public:
 		//Deadzone due to bad controllers
 		float ApplyDZ(float axis, float deadzone)
 		{
-			return fabs(axis) < deadzone ? 0 : (fabs(axis) - deadzone) / (1
-					- deadzone) * findSign(axis);
+			return fabs(axis) < deadzone ? 0 : (fabs(axis) - deadzone) / (1	- deadzone) * findSign(axis);
 		}
 
 };
