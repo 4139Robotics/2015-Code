@@ -51,6 +51,7 @@ public:
 		float xmove = 0;
 		float ymove = 0;
 		float rotationspeed = 0;
+		float gyroAng = 0;
 
 		if(input.rotateleft)
 		{
@@ -94,6 +95,7 @@ public:
 				ymove = input.yMovement/2;
 				rotationspeed = input.rotation;
 				//hopefully the struct float is determining whether the rotation is CW/CCW
+				gyroAng = input.gyroAngle;
 			}
 			else if(drivestate == 2)
 			{
@@ -104,6 +106,7 @@ public:
 				ymove = input.yMovement;
 				rotationspeed = input.rotation;
 				//hopefully the struct float is determining whether the rotation is CW/CCW
+				gyroAng = input.gyroAngle;
 			}
 		}
 		else if(drivestate == 3 || drivestate == 4)
@@ -141,9 +144,14 @@ public:
 			{
 				input.gyroAngle -= 180;
 			}
+
+			xmove = input.xMovement;
+			ymove = input.yMovement;
+			rotationspeed = input.rotation;
+			gyroAng = input.gyroAngle;
 		}
 
-		drive->MecanumDrive_Cartesian(xmove, ymove, rotationspeed, input.gyroAngle);
+		drive->MecanumDrive_Cartesian(xmove, ymove, rotationspeed, gyroAng);
 		return output;
 	}
 };
