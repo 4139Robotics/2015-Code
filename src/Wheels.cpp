@@ -34,7 +34,6 @@ private:
 	RobotDrive *drive;
 	int drivestate; // State 1: Normal  State 2: TurboMode  State 3: CCW Turn  State 4: CW Turn
 
-
 public:
 
 	Wheels()
@@ -52,8 +51,6 @@ public:
 		float xmove = 0;
 		float ymove = 0;
 		float rotationspeed = 0;
-
-
 
 		if(drivestate == 1 || drivestate == 2)
 		{
@@ -87,6 +84,7 @@ public:
 				xmove = input.xMovement/2;
 				ymove = input.yMovement/2;
 				rotationspeed = input.rotation;
+				//hopefully the struct float is determining whether the rotation is CW/CCW
 			}
 			else if(drivestate == 2)
 			{
@@ -96,9 +94,9 @@ public:
 				xmove = input.xMovement;
 				ymove = input.yMovement;
 				rotationspeed = input.rotation;
+				//hopefully the struct float is determining whether the rotation is CW/CCW
 			}
 		}
-
 
 		drive->MecanumDrive_Cartesian(xmove, ymove, rotationspeed, input.gyroAngle);
 		return output;
