@@ -45,28 +45,15 @@ public:
 	}
 
 
-	Wheel_Out Wheels::Run(Wheel_In input)
+	Wheel_Out Run(Wheel_In input)
 	{
 		float xmove = 0;
 		float ymove = 0;
 		float rotationspeed = 0;
 
-		if(rotate)
-		{
-			state = 2;
-		}
-		/*
-		if(spinleft)
-		{
-			state = 3;
-		}
-		if(spinright)
-		{
-			state = 4;
-		}
-		*/
 
-		if(state == 1)
+
+		if(state == 1 || state == 2)
 		{
 			if(input.xMovement > 1)
 			{
@@ -76,7 +63,6 @@ public:
 			{
 				input.xMovement == -1;
 			}
-
 			if(input.yMovement > 1)
 			{
 				input.yMovement == 1;
@@ -94,11 +80,18 @@ public:
 				input.rotation == -1;
 			}
 
-			xmove = input.xMovement;
-			ymove = input.yMovement;
+			if(state == 1)
+			{
+			xmove = input.xMovement/2;
+			ymove = input.yMovement/2;
 			rotationspeed = input.rotation;
+			}
+			else if(state == 2)
+			{
 
+			}
 		}
+
 
 		/*
 		else if(state == 3)
