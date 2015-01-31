@@ -146,4 +146,5 @@
 			<resource resourceType="PROJECT" workspacePath="/2015-Robot-Code"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>
