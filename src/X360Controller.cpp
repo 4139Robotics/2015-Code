@@ -47,6 +47,9 @@ struct X360Controller_Out
 		 rightTrigger,
 		 back,
 		 start;
+	//currently arbitrary functions
+	bool turbo,
+	     grab;
 };
 
 class X360Controller
@@ -57,9 +60,10 @@ private:
 
 
 
+
 public:
 
-	static const float DZ = .15;
+	const float DZ = .15;
 
 	X360Controller()
 	{
@@ -68,6 +72,8 @@ public:
 		//Output.returnY=0.0; //do some math in run
 		//Output.returnRotation=0.0; //do some math in run
 		Output.returnRotate=false;
+		Output.turbo=false;
+		Output.grab=false;
 
 	}
 	X360Controller_Out Run(X360Controller_In input)
@@ -103,9 +109,9 @@ public:
 		Output.start		= stick->GetRawButton(7);
 
 
-		Output.returnRotation = UDLR->GetZ() / (Output.Grab ? 4 : 2);//ApplyDZ(UDLR->GetZ()/2, DZ);
-		Output.returnX = ApplyDZ(UDLR->GetRawAxis(1) / (Output.Turbo ? 1 : 2), DZ) / (Output.Grab ? 2 : 1);
-		Output.returnY = -ApplyDZ(UDLR->GetRawAxis(2) / (Output.Turbo ? 1 : 2),DZ) / (Output.Grab ? 2 : 1);
+		Output.returnRotation = stick->GetZ() / (Output.grab ? 4 : 2);//ApplyDZ(stick->GetZ()/2, DZ);
+		Output.returnX =  ApplyDZ(stick->GetRawAxis(1) / (Output.turbo ? 1 : 2), DZ) / (Output.grab ? 2 : 1);
+		Output.returnY = -ApplyDZ(stick->GetRawAxis(2) / (Output.turbo ? 1 : 2), DZ) / (Output.grab ? 2 : 1);
 
 		return Output;
 	}
