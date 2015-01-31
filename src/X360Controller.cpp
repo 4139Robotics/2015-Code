@@ -16,6 +16,7 @@ struct X360Controller_In
 
 struct X360Controller_Out
 {
+	public:
 	float returnX,
 		  returnY,
 		  returnRotation;
