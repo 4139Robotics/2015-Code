@@ -11,12 +11,11 @@
 
 struct X360Controller_In
 {
-	//
+	//empty piece of trash
 };
 
 struct X360Controller_Out
 {
-	//rotation variables
 	float returnX,
 		  returnY,
 		  returnRotation;
@@ -63,9 +62,9 @@ public:
 	X360Controller()
 	{
 		stick = new Joystick(1);
-		//Output.returnX=0.0 //do some math in run
-		//Output.returnY=0.0 //do some math in run
-		//Output.returnRotation=0.0 //do some math in run
+		Output.returnX=0.0; //do some math in run
+		Output.returnY=0.0; //do some math in run
+		Output.returnRotation=0.0; //do some math in run
 		Output.returnRotate=false;
 
 	}
