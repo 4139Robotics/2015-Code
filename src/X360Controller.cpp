@@ -7,6 +7,7 @@
  */
 
 #include "WPILib.h"
+#include "math.h"
 
 struct X360Controller_In
 {
@@ -15,37 +16,87 @@ struct X360Controller_In
 
 struct X360Controller_Out
 {
-	float returnX, returnY, returnRotation;
+	//rotation variables
+	float returnRotation;
 	bool returnRotate;
+
+	//left and right analog sticks
+	float leftAnalogX,
+		  leftAnalogY,
+		  rightAnalogX,
+		  rightAnalogY,
+		  leftThrottle,
+		  rightThrottle;
+	//buttons
+	bool buttonA,
+	     buttonB,
+		 buttonX,
+		 buttonY,
+		 leftTrigger,
+		 rightTrigger,
+		 back,
+		 start;
 };
 
 class X360Controller
 {
 private:
-	Joystick* UDLR;
+	Joystick* stick;
 	X360Controller_Out Output;
-	float rightAnalogX,
-		  leftAnalogX,
-		  rightAnalogY,
-		  leftAnalogY;
 
 
 
 public:
 
-	X360Controller::X360Controller()
+	X360Controller()
 	{
-		UDLR = new Joystick(1);
-		leftAnalogX=UDLR->GetRawAxis(0);
-		leftAnalogY=UDLR->GetRawAxis(1);
-		rightAnalogX=UDLR->GetRawAxis(4);
-		rightAnalogY=UDLR->GetRawAxis(5);
+		stick = new Joystick(1);
+		//Output.returnX=0.0 //do some math in run
+		//Output.returnY=0.0 //do some math in run
+		//Output.returnRotation=0.0 //do some math in run
+		Output.returnRotate=false;
+
 	}
-	X360Controller_Out X360Controller::Run(X360Controller_In input)
+	X360Controller_Out Run(X360Controller_In input)
 	{
 
+		//setting sticks to general values
+		Output.leftAnalogX   = stick->GetRawAxis(0);
+		Output.leftAnalogY   = stick->GetRawAxis(1);
+		Output.leftThrottle  = stick->GetRawAxis(2);
+		Output.rightThrottle = stick->GetRawAxis(3);
+		Output.rightAnalogX  = stick->GetRawAxis(4);
+		Output.rightAnalogY  = stick->GetRawAxis(5);
+
+		//setting buttons to general functions
+		Output.buttonA	    = stick->GetRawButton(0);
+		Output.buttonB	    = stick->GetRawButton(1);
+		Output.buttonX	    = stick->GetRawButton(2);
+		Output.buttonY	    = stick->GetRawButton(3);
+		Output.leftTrigger  = stick->GetRawButton(4);
+		Output.rightTrigger = stick->GetRawButton(5);
+		Output.back			= stick->GetRawButton(6);
+		Output.start		= stick->GetRawButton(7);
 
 		return Output;
 	}
+
+
+	//signfinder, used for deadzone
+	float findSign(float num)
+	{
+			if (num > 0)
+				return 1;
+			else if (num < 0)
+				return -1;
+			else
+				return 0;
+		}
+
+		//Deadzone due to bad controllers
+		float ApplyDZ(float axis, float deadzone)
+		{
+			return fabs(axis) < deadzone ? 0 : (fabs(axis) - deadzone) / (1	- deadzone) * findSign(axis);
+		}
 
 };
