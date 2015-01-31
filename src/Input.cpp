@@ -29,8 +29,8 @@ Input_Out Input::Run(const Input_In& input)
     Sensors_Out sensout;
 
     //Running to obtain necessary information
-    sensout = sensors.Run();
-    xbout = controller.Run();
+    sensout = sensors->Run(sensin);
+    xbout = controller->Run(xbin);
 
 
     //Receiving information from the controller and sensor and returning a struct populated with this info
