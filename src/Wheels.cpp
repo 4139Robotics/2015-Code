@@ -38,7 +38,7 @@ public:
 
 	Wheels()
 	{
-		drive = new RobotDrive(0,2,1,3) //frontLeft, rearLeft, frontRight, rearRight
+		drive = new RobotDrive(0,2,1,3); //frontLeft, rearLeft, frontRight, rearRight
 		drivestate = 1;
 		drive->SetInvertedMotor(RobotDrive::kFrontLeftMotor, true); // 0 is front left wheel
 		drive->SetInvertedMotor(RobotDrive::kRearLeftMotor, true); // 2 is back left wheel
@@ -46,7 +46,7 @@ public:
 	}
 
 
-	Wheel_Out Run(Wheel_In input)
+	Wheels_Out Run(Wheels_In input)
 	{
 		float xmove = 0;
 		float ymove = 0;
