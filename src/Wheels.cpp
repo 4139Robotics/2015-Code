@@ -9,13 +9,14 @@
 #include "WPILib.h"
 
 //TODO - NormalSpeed = HalfSpeed - TurboMode - FullSpeed - AccelerationCurve(Only in TurboMode)
-
+//COMP - NormalSpeed[X]  TurboMode[]  180CCW[]  180CW[]
 
 struct Wheels_In
 {
 	float xMovement, yMovement, rotation, gyroAngle;
-	// Forward/Backward, Left/Right, Rotating, Robot's Current Rotation
+// Forward/Backward, Left/Right, Rotating, Robot's Current Rotation
 	float FINALACCEL; //The Acceleration Constant
+//	bool rotate; (how would this determine whether we you want to rotate left or right?)
 	bool rotateleft;
 	bool rotateright;
 };
@@ -42,13 +43,11 @@ public:
 		drivestate = 1;
 		drive->SetInvertedMotor(RobotDrive::kFrontLeftMotor, true); // 0 is front left wheel
 		drive->SetInvertedMotor(RobotDrive::kRearLeftMotor, true); // 2 is back left wheel
-
 	}
-
 
 	Wheels_Out Run(Wheels_In input)
 	{
-
+		Wheels_Out output;
 
 		float xmove = 0;
 		float ymove = 0;
@@ -87,23 +86,21 @@ public:
 			{
 				xmove = input.xMovement/2;
 				ymove = input.yMovement/2;
-				//rotationspeed = input.rotation;
+				rotationspeed = input.rotation;
 			}
 			else if(drivestate == 2)
 			{
-
 				input.xMovement += (input.xMovement * input.FINALACCEL);
 				input.yMovement += (input.yMovement * input.FINALACCEL);
 
 				xmove = input.xMovement;
 				ymove = input.yMovement;
-				//rotationspeed = input.rotation;
+				rotationspeed = input.rotation;
 			}
 		}
 
 
-
 		drive->MecanumDrive_Cartesian(xmove, ymove, rotationspeed, input.gyroAngle);
-		return Run;
+		return output;
 	}
 };
