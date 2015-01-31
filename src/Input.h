@@ -1,10 +1,11 @@
 #ifndef INPUT_H
 #define INPUT_H
+
+#include "WPILib.h"
+#include "X360Controller.cpp"
+#include "Sensors.cpp"
 struct Input_In
 {
-    public:
-	X360Controller_Out xbout;
-	Sensors_Out sensout;
 };
 
 struct Input_Out
@@ -22,8 +23,17 @@ struct Input_Out
 
 class Input
 {
+
     public:
-        static Input_Out Run(Input_In in);
+
+         Input();
+         ~Input();
+         Input_Out Run(Input_In in);
+
+    private:
+            X360Controller* controller;
+            Sensors* sensors;
+
 
 };
 
