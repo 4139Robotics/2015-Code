@@ -129,19 +129,6 @@ public:
 			else
 				noMoto = false;
 
-		if (yesMoto && !noMoto)
-		{
-			if (Output.returnX < 0)
-				Output.returnX = -100;
-			if (Output.returnX > 0)
-				Output.returnX = 100;
-
-			if (Output.returnY < 0)
-				Output.returnY = -100;
-			if (Output.returnY > 0)
-				Output.returnY = 100;
-		}
-
 		return Output;
 	}
 
