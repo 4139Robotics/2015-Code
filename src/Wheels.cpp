@@ -15,7 +15,6 @@ struct Wheels_In
 {
 	float xMovement, yMovement, rotation, gyroAngle;
 // Forward/Backward, Left/Right, Rotating, Robot's Current Rotation
-	float FINALACCEL; //The Acceleration Constant
 //	bool rotate; (how would this determine whether we you want to rotate left or right?)
 	bool rotateleft; // Drivestate: 3 (CCW Turn)
 	bool rotateright; // Drivestate: 4 (CW Turn)
@@ -52,6 +51,7 @@ public:
 		float ymove = 0;
 		float rotationspeed = 0;
 		float gyroAng = 0;
+		const float finalAccel = 0.335; //The Acceleration Constant
 
 		if(input.rotateleft)
 		{
@@ -99,8 +99,8 @@ public:
 			}
 			else if(drivestate == 2)
 			{
-				input.xMovement += (input.xMovement * input.FINALACCEL);
-				input.yMovement += (input.yMovement * input.FINALACCEL);
+				input.xMovement += (input.xMovement * finalAccel);
+				input.yMovement += (input.yMovement * finalAccel);
 
 				xmove = input.xMovement;
 				ymove = input.yMovement;
