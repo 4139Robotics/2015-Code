@@ -64,31 +64,6 @@ public:
 
 		if(drivestate == 1 || drivestate == 2)
 		{
-			if(input.xMovement > 1)
-			{
-				input.xMovement = 1;
-			}
-			else if(input.xMovement < -1)
-			{
-				input.xMovement = -1;
-			}
-			if(input.yMovement > 1)
-			{
-				input.yMovement = 1;
-			}
-			else if(input.yMovement < -1)
-			{
-				input.yMovement = -1;
-			}
-			if(input.rotation > 1)
-			{
-				input.rotation = 1;
-			}
-			else if(input.rotation < -1)
-			{
-				input.rotation = -1;
-			}
-
 			if(drivestate == 1)
 			{
 				xmove = input.xMovement/2;
@@ -111,31 +86,6 @@ public:
 		}
 		else if(drivestate == 3 || drivestate == 4)
 		{
-			if(input.xMovement > 1)
-			{
-				input.xMovement = 1;
-			}
-			else if(input.xMovement < -1)
-			{
-				input.xMovement = -1;
-			}
-			if(input.yMovement > 1)
-			{
-				input.yMovement = 1;
-			}
-			else if(input.yMovement < -1)
-			{
-				input.yMovement = -1;
-			}
-			if(input.rotation > 1)
-			{
-				input.rotation = 1;
-			}
-			else if(input.rotation < -1)
-			{
-				input.rotation = -1;
-			}
-
 			if(drivestate == 3)
 			{
 				input.gyroAngle += 180;
