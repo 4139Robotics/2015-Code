@@ -48,6 +48,8 @@ public:
 
 	Wheels_Out Run(Wheels_In input)
 	{
+
+
 		float xmove = 0;
 		float ymove = 0;
 		float rotationspeed = 0;
@@ -58,27 +60,27 @@ public:
 		{
 			if(input.xMovement > 1)
 			{
-				input.xMovement == 1;
+				input.xMovement = 1;
 			}
 			else if(input.xMovement < -1)
 			{
-				input.xMovement == -1;
+				input.xMovement = -1;
 			}
 			if(input.yMovement > 1)
 			{
-				input.yMovement == 1;
+				input.yMovement = 1;
 			}
 			else if(input.yMovement < -1)
 			{
-				input.yMovement == -1;
+				input.yMovement = -1;
 			}
 			if(input.rotation > 1)
 			{
-				input.rotation == 1;
+				input.rotation = 1;
 			}
 			else if(input.rotation < -1)
 			{
-				input.rotation == -1;
+				input.rotation = -1;
 			}
 
 			if(drivestate == 1)
@@ -89,8 +91,9 @@ public:
 			}
 			else if(drivestate == 2)
 			{
-				xMovement += (xMovement * FINALACCEL);
-				yMovement += (yMovement * FINALACCEL);
+
+				input.xMovement += (input.xMovement * input.FINALACCEL);
+				input.yMovement += (input.yMovement * input.FINALACCEL);
 
 				xmove = input.xMovement;
 				ymove = input.yMovement;
@@ -99,31 +102,8 @@ public:
 		}
 
 
-		/*
-		else if(state == 3)
-		{
-			input.xMovement = 0;
-			input.yMovement = 0;
-			input.rotation = -0.5;
 
-			xmove = input.xMovement;
-			ymove = input.yMovement;
-			rotationspeed = input.rotation;
-			input.gyroAngle = input.gyroAngle + 180;
-		}
-		else if(state == 4)
-		{
-			input.xMovement = 0;
-			input.yMovement = 0;
-			input.rotation = 0.5;
-
-			xmove = input.xMovement;
-			ymove = input.yMovement;
-			rotationspeed = input.rotation;
-			input.gyroAngle = input.gyroAngle - 180;
-		}
-		*/
 		drive->MecanumDrive_Cartesian(xmove, ymove, rotationspeed, input.gyroAngle);
-		return WheelOutput();
+		return Run;
 	}
 };
