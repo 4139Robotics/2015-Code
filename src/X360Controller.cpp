@@ -57,7 +57,8 @@ class X360Controller
 private:
 	Joystick* stick;
 	X360Controller_Out Output;
-
+	bool yesMoto;
+	bool noMoto;
 
 
 
@@ -74,7 +75,8 @@ public:
 		Output.returnRotate=false;
 		Output.turbo=false;
 		Output.grab=false;
-
+		yesMoto = false;
+		noMoto = false;
 	}
 	X360Controller_Out Run(X360Controller_In input)
 	{
@@ -113,6 +115,32 @@ public:
 		Output.returnX =  ApplyDZ(stick->GetRawAxis(1) / (Output.turbo ? 1 : 2), DZ) / (Output.grab ? 2 : 1);
 		Output.returnY = -ApplyDZ(stick->GetRawAxis(2) / (Output.turbo ? 1 : 2), DZ) / (Output.grab ? 2 : 1);
 
+		if (Output.returnX || Output.returnY)
+		{
+			if (yesMoto)
+			{
+			yesMoto = false;
+			noMoto = true;
+			}
+			else if (!noMoto)
+				yesMoto = true;
+		}
+			else
+				noMoto = false;
+
+		if (yesMoto && !noMoto)
+		{
+			if (Output.returnX < 0)
+				Output.returnX = -100;
+			if (Output.returnX > 0)
+				Output.returnX = 100;
+
+			if (Output.returnY < 0)
+				Output.returnY = -100;
+			if (Output.returnY > 0)
+				Output.returnY = 100;
+		}
+
 		return Output;
 	}
 
@@ -128,7 +156,7 @@ public:
 			return 0;
 	}
 
-		//Deadzone due to bad controllers
+		//deadzone due to bad controllers
 	float ApplyDZ(float axis, float deadzone)
 	{
 		return fabs(axis) < deadzone ? 0 : (fabs(axis) - deadzone) / (1	- deadzone) * findSign(axis);
