@@ -9,7 +9,7 @@
 #include "WPILib.h"
 
 //TODO - NormalSpeed = HalfSpeed - TurboMode - FullSpeed - AccelerationCurve(Only in TurboMode)
-//COMP - NormalSpeed[X]  TurboMode[]  180CCW[]  180CW[]
+//COMP - NormalSpeed[X]  TurboMode[X]  180CCW[X]  180CW[X]
 
 struct Wheels_In
 {
@@ -17,8 +17,8 @@ struct Wheels_In
 // Forward/Backward, Left/Right, Rotating, Robot's Current Rotation
 	float FINALACCEL; //The Acceleration Constant
 //	bool rotate; (how would this determine whether we you want to rotate left or right?)
-	bool rotateleft;
-	bool rotateright;
+	bool rotateleft; // Drivestate: 3 (CCW Turn)
+	bool rotateright; // Drivestate: 4 (CW Turn)
 };
 
 struct Wheels_Out
