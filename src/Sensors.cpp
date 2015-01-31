@@ -7,10 +7,7 @@
  */
 
 #include "WPILib.h"
-#include "gyro.cpp"
-#include "BuiltInAccelerometer.h"
-#include <DigitalInput.h>
-#include <Ultrasonic.h>
+
 
 struct Sensors_In
 {

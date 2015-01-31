@@ -15,6 +15,7 @@ struct Wheels_In
 {
 	float xMovement, yMovement, rotation, gyroAngle;
 	// Forward/Backward, Left/Right, Rotating, Robot's Current Rotation
+	float FINALACCEL; //The Acceleration Constant
 	bool rotateleft;
 	bool rotateright;
 };
@@ -38,7 +39,7 @@ public:
 	Wheels()
 	{
 		drive = new RobotDrive(0,2,1,3) //frontLeft, rearLeft, frontRight, rearRight
-		state = 1;
+		drivestate = 1;
 		drive->SetInvertedMotor(RobotDrive::kFrontLeftMotor, true); // 0 is front left wheel
 		drive->SetInvertedMotor(RobotDrive::kRearLeftMotor, true); // 2 is back left wheel
 
@@ -53,7 +54,7 @@ public:
 
 
 
-		if(state == 1 || state == 2)
+		if(drivestate == 1 || drivestate == 2)
 		{
 			if(input.xMovement > 1)
 			{
@@ -80,15 +81,20 @@ public:
 				input.rotation == -1;
 			}
 
-			if(state == 1)
+			if(drivestate == 1)
 			{
-			xmove = input.xMovement/2;
-			ymove = input.yMovement/2;
-			rotationspeed = input.rotation;
+				xmove = input.xMovement/2;
+				ymove = input.yMovement/2;
+				//rotationspeed = input.rotation;
 			}
-			else if(state == 2)
+			else if(drivestate == 2)
 			{
+				xMovement += (xMovement * FINALACCEL);
+				yMovement += (yMovement * FINALACCEL);
 
+				xmove = input.xMovement;
+				ymove = input.yMovement;
+				//rotationspeed = input.rotation;
 			}
 		}
 
@@ -117,7 +123,6 @@ public:
 			input.gyroAngle = input.gyroAngle - 180;
 		}
 		*/
-
 		drive->MecanumDrive_Cartesian(xmove, ymove, rotationspeed, input.gyroAngle);
 		return WheelOutput();
 	}
