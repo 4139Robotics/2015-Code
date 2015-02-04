@@ -4,13 +4,13 @@
 #include "WPILib.h"
 #include "X360Controller.cpp"
 #include "Sensors.cpp"
+
 struct Input_In
 {
 };
 
 struct Input_Out
 {
-    public:
 	// X360Controller
 	float returnX, returnY, returnRotation;
 	bool returnRotate;
@@ -23,18 +23,14 @@ struct Input_Out
 
 class Input
 {
+public:
+	Input();
+	~Input();
+	Input_Out Run(Input_In in);
 
-    public:
-
-         Input();
-         ~Input();
-         Input_Out Run(Input_In in);
-
-    private:
-            X360Controller* controller;
-            Sensors* sensors;
-
-
+private:
+	X360Controller* controller;
+	Sensors* sensors;
 };
 
 #endif
