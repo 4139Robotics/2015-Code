@@ -22,13 +22,13 @@ struct Output_In
 
 class Output
 {
-public:
-	Output_Out Run(Output_Input in)
+	private X360Controller.X360Controller_Out[] data;
+	private X360Controller
 	{
-		Output_Out output;
-		float returnX = xMovement;
-		float returnY = yMovement;
-		float returnRotation = rotation;
-		bool returnRotate = rotate;
+		
+	}
+	public void ImportData(X360Controller)
+	{
+		this.data = X360Controller.ExportData();
 	}
 };
