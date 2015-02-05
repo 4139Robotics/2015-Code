@@ -8,6 +8,7 @@
 
 #include "WPILib.h"
 #include "Wheels.cpp"
+#include "X360Controller.cpp"
 
 struct Output_In
 {
@@ -19,12 +20,15 @@ struct Output_In
 	int state;
 };
 
-struct Output_Out
-{
-	//
-};
-
 class Output
 {
-
+public:
+	Output_Out Run(Output_Input in)
+	{
+		Output_Out output;
+		float returnX = xMovement;
+		float returnY = yMovement;
+		float returnRotation = rotation;
+		bool returnRotate = rotate;
+	}
 };
