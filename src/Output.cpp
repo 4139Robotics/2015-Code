@@ -27,5 +27,29 @@ struct Output_Out
 
 class Output
 {
+private:
+	Wheels* wheels;
 
+public:
+	Output()
+	{
+		wheels = new Wheels();
+	}
+
+	Output_Out Run(Output_In input)
+	{
+		Output_Out output;
+
+		Wheels_In wIn;
+		Wheels_Out wOut;
+
+		wIn.xMovement = input.xMovement;
+		wIn.yMovement = input.yMovement;
+		wIn.rotation = input.rotation;
+		wIn.gyroAngle = input.gyroAngle;
+
+		wOut = wheels->Run(wIn);
+
+		return output;
+	}
 };
