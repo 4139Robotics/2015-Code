@@ -6,6 +6,9 @@
  *  	Author(s): Duncan Klug, LeDaniel Leung
  */
 
+// NOTE: Good job, but way too much stuff. I feel like lots of this will be cut out soon.
+// We also need clearer variables; renaming will come soon.
+
 #include "WPILib.h"
 #include "math.h"
 
@@ -18,49 +21,48 @@ struct X360Controller_Out
 {
 	//final return values
 	float returnX,
-		  returnY,
-		  returnRotation;
+		returnY,
+		returnRotation;
 	bool returnRotate;
 
 	//left and right analog sticks
 	float leftAnalogX,
-		  leftAnalogY,
-		  rightAnalogX,
-		  rightAnalogY,
-		  leftThrottle,
-		  rightThrottle;
+		leftAnalogY,
+		rightAnalogX,
+		rightAnalogY,
+		leftThrottle,
+		rightThrottle;
+
 	//POV hat
 	int center,
 		up,
-	    upRight,
+		upRight,
 		right,
 		downRight,
 		down,
 		downLeft,
 		left,
 		upLeft;
+
 	//buttons
 	bool buttonA,
-	     buttonB,
-		 buttonX,
-		 buttonY,
-		 leftTrigger,
-		 rightTrigger,
-		 back,
-		 start;
+		buttonB,
+		buttonX,
+		buttonY,
+		leftTrigger,
+		rightTrigger,
+		back,
+		start;
+
 	//currently arbitrary functions
-	bool turbo,
-	     grab;
+	bool turbo;
 };
 
 class X360Controller
 {
 private:
 	Joystick* stick;
-	X360Controller_Out Output;
-
-
-
+	X360Controller_Out output;
 
 public:
 
@@ -69,51 +71,51 @@ public:
 	X360Controller()
 	{
 		stick = new Joystick(1);
-		Output.returnX=0.0; //do some math in run
-		Output.returnY=0.0; //do some math in run
-		Output.returnRotation=0.0; //do some math in run
-		Output.returnRotate=false;
-		Output.turbo=false;
-		Output.grab=false;
+		output.returnX = 0.0; //do some math in run
+		output.returnY = 0.0; //do some math in run
+		output.returnRotation = 0.0; //do some math in run
+		output.returnRotate = false;
+		output.turbo = false;
 
 	}
+
 	X360Controller_Out Run(X360Controller_In input)
 	{
 		//receiving movement && throttle values and setting
-		Output.leftAnalogX   = stick->GetRawAxis(0);
-		Output.leftAnalogY   = stick->GetRawAxis(1);
-		Output.leftThrottle  = stick->GetRawAxis(2);
-		Output.rightThrottle = stick->GetRawAxis(3);
-		Output.rightAnalogX  = stick->GetRawAxis(4);
-		Output.rightAnalogY  = stick->GetRawAxis(5);
+		output.leftAnalogX   = stick->GetRawAxis(0);
+		output.leftAnalogY   = stick->GetRawAxis(1);
+		output.leftThrottle  = stick->GetRawAxis(2);
+		output.rightThrottle = stick->GetRawAxis(3);
+		output.rightAnalogX  = stick->GetRawAxis(4);
+		output.rightAnalogY  = stick->GetRawAxis(5);
 
 		//setting states to POV values
-		Output.center	 = stick->GetPOV(-1);
-		Output.up 		 = stick->GetPOV(0);
-		Output.upRight   = stick->GetPOV(45);
-		Output.right 	 = stick->GetPOV(90);
-		Output.downRight = stick->GetPOV(135);
-		Output.down 	 = stick->GetPOV(180);
-		Output.downLeft  = stick->GetPOV(225);
-		Output.left 	 = stick->GetPOV(270);
-		Output.upLeft 	 = stick->GetPOV(315);
+		output.center	 = stick->GetPOV(-1);
+		output.up 		 = stick->GetPOV(0);
+		output.upRight   = stick->GetPOV(45);
+		output.right 	 = stick->GetPOV(90);
+		output.downRight = stick->GetPOV(135);
+		output.down 	 = stick->GetPOV(180);
+		output.downLeft  = stick->GetPOV(225);
+		output.left 	 = stick->GetPOV(270);
+		output.upLeft 	 = stick->GetPOV(315);
 
 		//setting buttons to general functions
-		Output.buttonA	    = stick->GetRawButton(0);
-		Output.buttonB	    = stick->GetRawButton(1);
-		Output.buttonX	    = stick->GetRawButton(2);
-		Output.buttonY	    = stick->GetRawButton(3);
-		Output.leftTrigger  = stick->GetRawButton(4);
-		Output.rightTrigger = stick->GetRawButton(5);
-		Output.back			= stick->GetRawButton(6);
-		Output.start		= stick->GetRawButton(7);
+		output.buttonA	    = stick->GetRawButton(0);
+		output.buttonB	    = stick->GetRawButton(1);
+		output.buttonX	    = stick->GetRawButton(2);
+		output.buttonY	    = stick->GetRawButton(3);
+		output.leftTrigger  = stick->GetRawButton(4);
+		output.rightTrigger = stick->GetRawButton(5);
+		output.back			= stick->GetRawButton(6);
+		output.start		= stick->GetRawButton(7);
 
 		//doing math for final return values
-		Output.returnX =  ApplyDZ(stick->GetRawAxis(1) / (Output.turbo ? 1 : 2), DZ) / (Output.grab ? 2 : 1);
-		Output.returnY = -ApplyDZ(stick->GetRawAxis(2) / (Output.turbo ? 1 : 2), DZ) / (Output.grab ? 2 : 1);
-		Output.returnRotation = stick->GetZ() / (Output.grab ? 4 : 2);//ApplyDZ(stick->GetZ()/2, DZ);
+		output.returnX =  ApplyDZ(stick->GetRawAxis(1) / (output.turbo ? 1 : 2), DZ);
+		output.returnY = -ApplyDZ(stick->GetRawAxis(2) / (output.turbo ? 1 : 2), DZ);
+		output.returnRotation = stick->GetZ();
 
-		return Output;
+		return output;
 	}
 
 

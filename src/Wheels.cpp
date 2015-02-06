@@ -14,8 +14,8 @@
 struct Wheels_In
 {
 	float xMovement, yMovement, rotation, gyroAngle;
-// Forward/Backward, Left/Right, Rotating, Robot's Current Rotation
-//	bool rotate; (how would this determine whether we you want to rotate left or right?)
+	// Forward/Backward, Left/Right, Rotating, Robot's Current Rotation
+	//	bool rotate; (how would this determine whether we you want to rotate left or right?)
 	bool rotateleft; // Drivestate: 3 (CCW Turn)
 	bool rotateright; // Drivestate: 4 (CW Turn)
 };
@@ -29,12 +29,10 @@ class Wheels
 {
 
 private:
-
 	RobotDrive *drive;
 	int drivestate; // State 1: Normal  State 2: TurboMode  State 3: CCW Turn  State 4: CW Turn
 
 public:
-
 	Wheels()
 	{
 		drive = new RobotDrive(0,2,1,3); //frontLeft, rearLeft, frontRight, rearRight

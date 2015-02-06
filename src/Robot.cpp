@@ -10,7 +10,7 @@
 #include "Input.cpp"
 #include "Output.cpp"
 
-class Robot: public IterativeRobot
+class PiBot2015: public IterativeRobot
 {
 public:
 
@@ -50,11 +50,6 @@ private:
 
 		//inputOut = input->Run(inputIn);
 
-		outputIn.xMovement = inputOut.returnX;
-		outputIn.yMovement = inputOut.returnY;
-		outputIn.rotation = inputOut.returnRotation;
-		outputIn.rotate = inputOut.returnRotate;
-
 		//outputOut = output->Run(outputIn);
 	}
 
@@ -64,4 +59,4 @@ private:
 	}
 };
 
-START_ROBOT_CLASS(Robot);
+START_ROBOT_CLASS(PiBot2015);
