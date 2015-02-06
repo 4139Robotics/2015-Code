@@ -17,7 +17,7 @@ struct X360Controller_In
 	//empty piece of trash
 };
 
-public struct X360Controller_Out
+struct X360Controller_Out
 {
 	//final return values
 	float returnX,
@@ -57,11 +57,6 @@ public struct X360Controller_Out
 	//currently arbitrary functions
 	bool turbo;
 };
-private X360Controller_Out[] data;
-public X360Controller_Out[] ExportData()
-{
-	return data;
-}
 
 class X360Controller
 {
@@ -81,7 +76,6 @@ public:
 		output.returnRotation = 0.0; //do some math in run
 		output.returnRotate = false;
 		output.turbo = false;
-
 	}
 
 	X360Controller_Out Run(X360Controller_In input)
