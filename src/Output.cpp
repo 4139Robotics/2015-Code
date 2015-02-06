@@ -8,6 +8,7 @@
 
 #include "WPILib.h"
 #include "Wheels.cpp"
+#include "X360Controller.cpp"
 
 struct Output_In
 {
@@ -19,12 +20,15 @@ struct Output_In
 	int state;
 };
 
-struct Output_Out
-{
-	//
-};
-
 class Output
 {
-
+	private X360Controller.X360Controller_Out[] data;
+	private X360Controller
+	{
+		
+	}
+	public void ImportData(X360Controller)
+	{
+		this.data = X360Controller.ExportData();
+	}
 };
