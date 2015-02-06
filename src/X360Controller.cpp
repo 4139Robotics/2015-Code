@@ -30,17 +30,17 @@ public:
 		  leftThrottle,
 		  rightThrottle;
 	//POV hat
-	int center,
-		up,
-	    upRight,
-		right,
-		downRight,
-		down,
-		downLeft,
-		left,
-		upLeft;
+	bool POVcenter,
+		 POVup,
+	     POVupRight,
+	 	 POVright,
+	 	 POVdownRight,
+		 POVdown,
+		 POVdownLeft,
+		 POVleft,
+		 POVupLeft,
 	//buttons
-	bool buttonA,
+		 buttonA,
 	     buttonB,
 		 buttonX,
 		 buttonY,
@@ -58,8 +58,8 @@ class X360Controller
 private:
 	Joystick* stick;
 	X360Controller_Out Output;
-	bool yesMoto;
-	bool noMoto;
+	bool yesMoto,
+		 noMoto;
 
 
 
@@ -70,8 +70,6 @@ public:
 	X360Controller()
 	{
 		stick = new Joystick(1);
-		Output.returnX=0.0; //do some math in run
-		Output.returnY=0.0; //do some math in run
 		Output.returnRotation=0.0; //do some math in run
 		Output.returnRotate=false;
 		Output.turbo=false;
@@ -90,15 +88,34 @@ public:
 		Output.rightAnalogY  = stick->GetRawAxis(5);
 
 		//setting states to POV values
-		Output.center	 = stick->GetPOV(-1);
-		Output.up 		 = stick->GetPOV(0);
-		Output.upRight   = stick->GetPOV(45);
-		Output.right 	 = stick->GetPOV(90);
-		Output.downRight = stick->GetPOV(135);
-		Output.down 	 = stick->GetPOV(180);
-		Output.downLeft  = stick->GetPOV(225);
-		Output.left 	 = stick->GetPOV(270);
-		Output.upLeft 	 = stick->GetPOV(315);
+		if(stick->GetPOV()==-1){
+			Output.POVcenter=true;
+		}
+		if(stick->GetPOV()==0){
+			Output.POVup=true;
+		}
+		if(stick->GetPOV()==45){
+			Output.POVupRight=true;
+		}
+		if(stick->GetPOV()==90){
+			Output.POVright=true;
+		}
+		if(stick->GetPOV()==135){
+			Output.POVdownRight=true;
+		}
+		if(stick->GetPOV()==180){
+			Output.POVdown=true;
+		}
+		if(stick->GetPOV()==225){
+			Output.POVdownLeft=true;
+		}
+		if(stick->GetPOV()==270){
+			Output.POVleft=true;
+		}
+		if(stick->GetPOV()==315){
+			Output.POVupLeft=true;
+		}
+
 
 		//setting buttons to general functions
 		Output.buttonA	    = stick->GetRawButton(0);
@@ -109,6 +126,13 @@ public:
 		Output.rightTrigger = stick->GetRawButton(5);
 		Output.back			= stick->GetRawButton(6);
 		Output.start		= stick->GetRawButton(7);
+
+		//the following (commented out) code is based Etan's preferences for driver control
+		Output.returnX = Output.rightThrottle*100-Output.leftThrottle*100;
+		Output.returnY = Output.leftAnalogX;
+
+
+
 
 		//doing math for final return values
 		Output.returnX =  ApplyDZ(stick->GetRawAxis(1) / (Output.turbo ? 1 : 2), DZ) / (Output.grab ? 2 : 1);
