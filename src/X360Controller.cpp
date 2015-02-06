@@ -14,7 +14,7 @@ struct X360Controller_In
 	//empty piece of trash
 };
 
-struct X360Controller_Out
+public struct X360Controller_Out
 {
 public:
 	float returnX,
@@ -52,6 +52,11 @@ public:
 	bool turbo,
 	     grab;
 };
+private X360Controller_Out[] data;
+public X360Controller_Out[] ExportData()
+{
+	return data;
+}
 
 class X360Controller
 {
