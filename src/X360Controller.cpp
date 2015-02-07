@@ -14,49 +14,33 @@ struct X360Controller_In
 	//empty piece of trash
 };
 
-public struct X360Controller_Out
+struct X360Controller_Out
 {
 public:
 	float returnX,
 		  returnY,
-		  returnRotation;
+		  returnRotation,
+		  returnLift;
 	bool returnRotate;
 
 	//left and right analog sticks
-	float leftAnalogX,
+	float leftAnalogX, //controls movement
 		  leftAnalogY,
-		  rightAnalogX,
+		  rightAnalogX, //controls lift
 		  rightAnalogY,
-		  leftThrottle,
-		  rightThrottle;
-	//POV hat
-	bool POVcenter,
-		 POVup,
-	     POVupRight,
-	 	 POVright,
-	 	 POVdownRight,
-		 POVdown,
-		 POVdownLeft,
-		 POVleft,
-		 POVupLeft,
+		  CCWRotation, //left throttle
+		  CWRotation; //right throttle
+
 	//buttons
-		 buttonA,
+	bool buttonA, //possible lift heights
 	     buttonB,
 		 buttonX,
 		 buttonY,
-		 leftTrigger,
-		 rightTrigger,
-		 back,
+		 Turbo, //left bumper
+		 Lift, //right bumper
+		 GyroReset, //back
 		 start;
-	//currently arbitrary functions
-	bool turbo,
-	     grab;
 };
-private X360Controller_Out[] data;
-public X360Controller_Out[] ExportData()
-{
-	return data;
-}
 
 class X360Controller
 {
@@ -77,9 +61,9 @@ public:
 		stick = new Joystick(1);
 		Output.returnRotation=0.0; //do some math in run
 		Output.returnRotate=false;
-		Output.turbo=false;
-		Output.grab=false;
-		yesMoto = false;
+		Output.Turbo=false;
+		Output.Lift=false;
+		yesMoto = false; //what the hell is this
 		noMoto = false;
 	}
 	X360Controller_Out Run(X360Controller_In input)
@@ -87,63 +71,61 @@ public:
 		//receiving movement && throttle values and setting
 		Output.leftAnalogX   = stick->GetRawAxis(0);
 		Output.leftAnalogY   = stick->GetRawAxis(1);
-		Output.leftThrottle  = stick->GetRawAxis(2);
-		Output.rightThrottle = stick->GetRawAxis(3);
+		Output.CCWRotation   = stick->GetRawAxis(2);
+		Output.CWRotation 	 = stick->GetRawAxis(3);
 		Output.rightAnalogX  = stick->GetRawAxis(4);
 		Output.rightAnalogY  = stick->GetRawAxis(5);
-
-		//setting states to POV values
-		if(stick->GetPOV()==-1){
-			Output.POVcenter=true;
-		}
-		if(stick->GetPOV()==0){
-			Output.POVup=true;
-		}
-		if(stick->GetPOV()==45){
-			Output.POVupRight=true;
-		}
-		if(stick->GetPOV()==90){
-			Output.POVright=true;
-		}
-		if(stick->GetPOV()==135){
-			Output.POVdownRight=true;
-		}
-		if(stick->GetPOV()==180){
-			Output.POVdown=true;
-		}
-		if(stick->GetPOV()==225){
-			Output.POVdownLeft=true;
-		}
-		if(stick->GetPOV()==270){
-			Output.POVleft=true;
-		}
-		if(stick->GetPOV()==315){
-			Output.POVupLeft=true;
-		}
-
 
 		//setting buttons to general functions
 		Output.buttonA	    = stick->GetRawButton(0);
 		Output.buttonB	    = stick->GetRawButton(1);
 		Output.buttonX	    = stick->GetRawButton(2);
 		Output.buttonY	    = stick->GetRawButton(3);
-		Output.leftTrigger  = stick->GetRawButton(4);
-		Output.rightTrigger = stick->GetRawButton(5);
-		Output.back			= stick->GetRawButton(6);
+		Output.Turbo 	    = stick->GetRawButton(4);
+		Output.Lift 		= stick->GetRawButton(5);
+		Output.GyroReset	= stick->GetRawButton(6);
 		Output.start		= stick->GetRawButton(7);
 
-		//the following (commented out) code is based Etan's preferences for driver control
+		/*
+		the following (commented out) code is based Etan's preferences for driver control
 		Output.returnX = Output.rightThrottle*100-Output.leftThrottle*100;
-		Output.returnY = Output.leftAnalogX;
-
+		Output.returnY = Output.leftAnalogY*100;
+		*/
 
 
 
 		//doing math for final return values
-		Output.returnX =  ApplyDZ(stick->GetRawAxis(1) / (Output.turbo ? 1 : 2), DZ) / (Output.grab ? 2 : 1);
-		Output.returnY = -ApplyDZ(stick->GetRawAxis(2) / (Output.turbo ? 1 : 2), DZ) / (Output.grab ? 2 : 1);
-		Output.returnRotation = stick->GetZ() / (Output.grab ? 4 : 2);//ApplyDZ(stick->GetZ()/2, DZ);
+		Output.returnX =  ApplyDZ(Output.leftAnalogX / (Output.Turbo ? 1 : 2), DZ) / (Output.Lift ? 2 : 1);
+		Output.returnY = -ApplyDZ(Output.leftAnalogY / (Output.Turbo ? 1 : 2), DZ) / (Output.Lift ? 2 : 1);
+		Output.returnRotation = stick->GetZ() / (Output.Lift ? 4 : 2);//ApplyDZ(stick->GetZ()/2, DZ);
 
+
+		if(Output.CCWRotation>0){
+			Output.returnRotate = true;
+			Output.CCWRotation = .5;
+		}
+		if(Output.CWRotation>0){
+			Output.returnRotate = true;
+			Output.CCWRotation = -.5;
+		}
+		if(Output.buttonA){
+			Output.returnLift = 0;
+		}
+		if(Output.buttonB){
+			Output.returnLift = .25;
+		}
+		if(Output.buttonX){
+			Output.returnLift = .5;
+		}
+		if(Output.buttonY){
+			Output.returnLift = .75;
+		}
+
+		Output.returnX *= 100;
+		Output.returnY *= 100;
+
+
+		/*
 		if (Output.returnX || Output.returnY)
 		{
 			if (yesMoto)
@@ -168,7 +150,7 @@ public:
 				Output.returnY = -100;
 			if (Output.returnY > 0)
 				Output.returnY = 100;
-		}
+		}*/
 
 		return Output;
 	}
