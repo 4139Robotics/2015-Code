@@ -8,7 +8,7 @@
 
 #include "WPILib.h"
 #include "Wheels.cpp"
-#include "X360Controller.cpp"
+#include "Forklift.cpp"
 
 struct Output_In
 {
@@ -20,15 +20,36 @@ struct Output_In
 	int state;
 };
 
+struct Output_Out
+{
+	// nothing
+};
+
 class Output
 {
-	private X360Controller.X360Controller_Out[] data;
-	private X360Controller
+private:
+	Wheels* wheels;
+
+public:
+	Output()
 	{
-		
+		wheels = new Wheels();
 	}
-	public void ImportData(X360Controller)
+
+	Output_Out Run(Output_In input)
 	{
-		this.data = X360Controller.ExportData();
+		Output_Out output;
+
+		Wheels_In wIn;
+		Wheels_Out wOut;
+
+		wIn.xMovement = input.xMovement;
+		wIn.yMovement = input.yMovement;
+		wIn.rotation = input.rotation;
+		wIn.gyroAngle = input.gyroAngle;
+
+		wOut = wheels->Run(wIn);
+
+		return output;
 	}
 };

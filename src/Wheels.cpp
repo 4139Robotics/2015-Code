@@ -14,10 +14,9 @@
 struct Wheels_In
 {
 	float xMovement, yMovement, rotation, gyroAngle;
-// Forward/Backward, Left/Right, Rotating, Robot's Current Rotation
-//	bool rotate; (how would this determine whether we you want to rotate left or right?)
-	bool rotateleft; // Drivestate: 3 (CCW Turn)
-	bool rotateright; // Drivestate: 4 (CW Turn)
+	bool turboMode;
+	bool rotateCCW; // Drivestate: 3 (CCW Turn)
+	bool rotateCW; // Drivestate: 4 (CW Turn)
 };
 
 struct Wheels_Out
@@ -29,16 +28,13 @@ class Wheels
 {
 
 private:
-
 	RobotDrive *drive;
-	int drivestate; // State 1: Normal  State 2: TurboMode  State 3: CCW Turn  State 4: CW Turn
+	//int driveState; // State 1: Normal  State 2: TurboMode  State 3: CCW Turn  State 4: CW Turn
 
 public:
-
 	Wheels()
 	{
 		drive = new RobotDrive(0,2,1,3); //frontLeft, rearLeft, frontRight, rearRight
-		drivestate = 1;
 		drive->SetInvertedMotor(RobotDrive::kFrontLeftMotor, true); // 0 is front left wheel
 		drive->SetInvertedMotor(RobotDrive::kRearLeftMotor, true); // 2 is back left wheel
 	}
@@ -47,61 +43,38 @@ public:
 	{
 		Wheels_Out output;
 
-		float xmove = 0;
-		float ymove = 0;
-		float rotationspeed = 0;
-		float gyroAng = 0;
-		const float finalAccel = 0.335; //The Acceleration Constant
+		float xMove = 0;
+		float yMove = 0;
+		float rotationSpeed = 0;
 
-		if(input.rotateleft)
+		// normal
+		if(!input.turboMode)
 		{
-			drivestate = 3;
+			xMove = input.xMovement/2;
+			yMove = input.yMovement/2;
+
+			rotationSpeed = input.rotation;
 		}
-		if(input.rotateright)
+		// turbo
+		else
 		{
-			drivestate = 4;
-		}
+			xMove = input.xMovement;
+			yMove = input.yMovement;
 
-		if(drivestate == 1 || drivestate == 2)
-		{
-			if(drivestate == 1)
-			{
-				xmove = input.xMovement/2;
-				ymove = input.yMovement/2;
-				rotationspeed = input.rotation;
-				//hopefully the struct float is determining whether the rotation is CW/CCW
-				gyroAng = input.gyroAngle;
-			}
-			else if(drivestate == 2)
-			{
-				input.xMovement += (input.xMovement * finalAccel);
-				input.yMovement += (input.yMovement * finalAccel);
-
-				xmove = input.xMovement;
-				ymove = input.yMovement;
-				rotationspeed = input.rotation;
-				//hopefully the struct float is determining whether the rotation is CW/CCW
-				gyroAng = input.gyroAngle;
-			}
-		}
-		else if(drivestate == 3 || drivestate == 4)
-		{
-			if(drivestate == 3)
-			{
-				input.gyroAngle += 180;
-			}
-			else if(drivestate == 4)
-			{
-				input.gyroAngle -= 180;
-			}
-
-			xmove = input.xMovement;
-			ymove = input.yMovement;
-			rotationspeed = input.rotation;
-			gyroAng = input.gyroAngle;
+			rotationSpeed = input.rotation;
 		}
 
-		drive->MecanumDrive_Cartesian(xmove, ymove, rotationspeed, gyroAng);
+		// rotation
+		if(input.rotateCCW)
+		{
+			rotationSpeed = -0.5;
+		}
+		if(input.rotateCW)
+		{
+			rotationSpeed = 0.5;
+		}
+
+		drive->MecanumDrive_Cartesian(xMove, yMove, rotationSpeed, input.gyroAngle);
 		return output;
 	}
 };

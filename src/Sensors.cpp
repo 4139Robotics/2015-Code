@@ -3,14 +3,14 @@
         Sends various data from the sensors
  *
  *  FRC Team 4139 - Easy as Pi
- *      Author(s): Rhea Bae & Jeffrey Chen
+ *      Author(s): Rhea Bae, Jeffrey Chen
  */
 
 #include "WPILib.h"
 
 struct Sensors_In
 {
-    
+    // nothing
 };
 
 struct Sensors_Out
@@ -26,18 +26,18 @@ class Sensors
 private:
     Gyro *gyro;
     Accelerometer *accel;
-    DigitalInput *UpperLift;
-    DigitalInput *LowerLift;
-    Ultrasonic *Sanic;
+    DigitalInput *upperLift;
+    DigitalInput *lowerLift;
+    Ultrasonic *sonic;
     
 public:
     Sensors()
 	{
         gyro = new Gyro(999);
         accel = new BuiltInAccelerometer(Accelerometer::kRange_4G);
-        UpperLift = new DigitalInput(998);
-        LowerLift = new DigitalInput(997);
-        Sanic = new Ultrasonic(999,999);
+        upperLift = new DigitalInput(999);
+        lowerLift = new DigitalInput(999);
+        sonic = new Ultrasonic(999,999);
     }
 
     Sensors_Out Run(Sensors_In input)
@@ -48,9 +48,9 @@ public:
         out.returnAccelX = accel->GetX();
         out.returnAccelY = accel->GetY();
         out.returnAccelZ = accel->GetZ();
-        out.returnUpperLiftSwitch = UpperLift->Get();
-        out.returnLowerLiftSwitch = LowerLift ->Get();
-        out.returnDistance = Sanic -> GetRangeInches();
+        out.returnUpperLiftSwitch = upperLift->Get();
+        out.returnLowerLiftSwitch = lowerLift ->Get();
+        out.returnDistance = sonic->GetRangeInches();
 
         return out;
     }

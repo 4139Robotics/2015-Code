@@ -3,46 +3,83 @@
  *  	Sends out various inputs from the controller and sensors..
  *
  *  FRC Team 4139 - Easy as Pi
- *  	Author(s):
+ *  	Author(s): Derek Ta
  */
 
-#include "Input.h"
+#include "WPILib.h"
+#include "X360Controller.cpp"
+#include "Sensors.cpp"
 
-Input::Input()
+struct Input_In
 {
-    controller = new Controller();
-    sensors = new Sensors();
-}
 
-Input::~Input()
+};
+
+struct Input_Out
 {
-    delete controller;
-    delete sensors;
-}
-Input_Out Input::Run(const Input_In& input)
+	// X360Controller
+	float returnX, returnY, returnRotation;
+	bool returnRotateCCW, returnRotateCW;
+	bool returnTurboMode;
+
+	// Sensors
+	float returnGyroAngle;
+	float returnAccelX, returnAccelY, returnAccelZ;
+	float returnDistance;
+	bool returnUpperLiftSwitch, returnLowerLiftSwitch;
+};
+
+class Input
 {
-    //Declaring all necessary structs
-    Input_Out output;
-    X360Controller_In xbin;
-    X360Controller_Out xbout;
-    Sensors_In sensin;
-    Sensors_Out sensout;
+private:
+	X360Controller* controller;
+	Sensors* sensors;
 
-    //Running to obtain necessary information
-    sensout = sensors->Run(sensin);
-    xbout = controller->Run(xbin);
+public:
+	Input()
+	{
+		controller = new X360Controller();
+		sensors = new Sensors();
+	}
 
 
-    //Receiving information from the controller and sensor and returning a struct populated with this info
-    output.returnGyroAngle = sensout.returnGyroAngle;//Sensor info
-    output.returnAccelX = sensout.returnAccelX;
-    output.returnAccelY = sensout.returnAccelY;
-    output.returnAccelZ = sensout.returnAccelZ;
-    output.returnDistance = sensout.returnDistance;
-    output.returnX = xbout.returnX;//Xbox controller info
-    output.returnY = xbout.returnY;
-    output.returnRotation = xbout.returnRotation;
-    output.returnRotate = xbout.returnRotate;
+	/*
+	Input::~Input()
+	{
+    	delete controller;
+    	delete sensors;
+	}
+	 */
 
-    return output;
-}
+	Input_Out Run(Input_In input)
+	{
+		//Declaring all necessary structs
+		Input_Out output;
+		X360Controller_In xbIn;
+		X360Controller_Out xbOut;
+		Sensors_In sensIn;
+		Sensors_Out sensOut;
+
+		//Running to obtain necessary information
+		sensOut = sensors->Run(sensIn);
+		xbOut = controller->Run(xbIn);
+
+		//Receiving information from the controller and sensor and returning a struct populated with this info
+		output.returnX = xbOut.returnX;
+		output.returnY = xbOut.returnY;
+		output.returnRotation = xbOut.returnRotation;
+		output.returnRotateCCW = xbOut.returnRotateCCW;
+		output.returnRotateCW = xbOut.returnRotateCW;
+		output.returnTurboMode = xbOut.returnTurboMode;
+
+		output.returnGyroAngle = sensOut.returnGyroAngle; //Sensor info
+		output.returnAccelX = sensOut.returnAccelX;
+		output.returnAccelY = sensOut.returnAccelY;
+		output.returnAccelZ = sensOut.returnAccelZ;
+		output.returnDistance = sensOut.returnDistance;
+		output.returnUpperLiftSwitch = sensOut.returnUpperLiftSwitch;
+		output.returnLowerLiftSwitch = sensOut.returnLowerLiftSwitch;
+
+		return output;
+	}
+};

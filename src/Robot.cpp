@@ -10,7 +10,7 @@
 #include "Input.cpp"
 #include "Output.cpp"
 
-class Robot: public IterativeRobot
+class PiBot2015: public IterativeRobot
 {
 public:
 
@@ -48,14 +48,21 @@ private:
 		Output_In outputIn;
 		Output_Out outputOut;
 
-		//inputOut = input->Run(inputIn);
+		inputOut = input->Run(inputIn);
 
-		outputIn.xMovement = inputOut.returnX;
-		outputIn.yMovement = inputOut.returnY;
-		outputIn.rotation = inputOut.returnRotation;
-		outputIn.rotate = inputOut.returnRotate;
+		inputOut.returnX = outputIn.xMovement;
+		inputOut.returnY = outputIn.yMovement;
+		inputOut.returnRotation = outputIn.rotation;
+		inputOut.returnTurboMode = outputIn.turboMode;
+		inputOut.returnGyroAngle = outputIn.gyroAngle;
+		inputOut.returnAccelX = outputIn.accelX;
+		inputOut.returnAccelY = outputIn.accelY;
+		inputOut.returnAccelZ = outputIn.accelZ;
+		inputOut.returnDistance = outputIn.distance;
+		inputOut.returnUpperLiftSwitch = outputIn.upperLiftSwitch;
+		inputOut.returnLowerLiftSwitch = outputIn.lowerLiftSwitch;
 
-		//outputOut = output->Run(outputIn);
+		outputOut = output->Run(outputIn);
 	}
 
 	void TestPeriodic()
@@ -64,4 +71,4 @@ private:
 	}
 };
 
-START_ROBOT_CLASS(Robot);
+START_ROBOT_CLASS(PiBot2015);
