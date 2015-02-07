@@ -48,9 +48,21 @@ private:
 		Output_In outputIn;
 		Output_Out outputOut;
 
-		//inputOut = input->Run(inputIn);
+		inputOut = input->Run(inputIn);
 
-		//outputOut = output->Run(outputIn);
+		inputOut.returnX = outputIn.xMovement;
+		inputOut.returnY = outputIn.yMovement;
+		inputOut.returnRotation = outputIn.rotation;
+		inputOut.returnTurboMode = outputIn.turboMode;
+		inputOut.returnGyroAngle = outputIn.gyroAngle;
+		inputOut.returnAccelX = outputIn.accelX;
+		inputOut.returnAccelY = outputIn.accelY;
+		inputOut.returnAccelZ = outputIn.accelZ;
+		inputOut.returnDistance = outputIn.distance;
+		inputOut.returnUpperLiftSwitch = outputIn.upperLiftSwitch;
+		inputOut.returnLowerLiftSwitch = outputIn.lowerLiftSwitch;
+
+		outputOut = output->Run(outputIn);
 	}
 
 	void TestPeriodic()
