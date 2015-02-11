@@ -37,7 +37,7 @@ public:
 		 buttonX,
 		 buttonY,
 		 Turbo, //left bumper
-		 LiftSpeed, //right bumper
+		 Lift, //right bumper
 		 GyroReset, //back
 		 start;
 };
@@ -62,7 +62,7 @@ public:
 		Output.returnRotation=0.0; //do some math in run
 		Output.returnRotate=false;
 		Output.Turbo=false;
-		Output.LiftSpeed=false;
+		Output.Lift=false;
 		yesMoto = false; //what the hell is this
 		noMoto = false;
 	}
@@ -77,61 +77,60 @@ public:
 		Output.rightAnalogY  = stick->GetRawAxis(5);
 
 		//setting buttons to general functions
-		Output.buttonA	    = stick->GetRawButton(0);
-		Output.buttonB	    = stick->GetRawButton(1);
-		Output.buttonX	    = stick->GetRawButton(2);
-		Output.buttonY	    = stick->GetRawButton(3);
-		Output.Turbo 	    = stick->GetRawButton(4);
-		Output.LiftSpeed	= stick->GetRawButton(5);
-		Output.GyroReset	= stick->GetRawButton(6);
-		Output.start		= stick->GetRawButton(7);
+		Output.buttonA	    = stick->GetRawButton(1);
+		Output.buttonB	    = stick->GetRawButton(2);
+		Output.buttonX	    = stick->GetRawButton(3);
+		Output.buttonY	    = stick->GetRawButton(4);
+		Output.Turbo 	    = stick->GetRawButton(5);
+		Output.Lift			= stick->GetRawButton(6);
+		Output.GyroReset	= stick->GetRawButton(7);
+		Output.start		= stick->GetRawButton(8);
 
-		/*
-		the following (commented out) code is based Etan's preferences for driver control
-		Output.returnX = Output.rightThrottle*100-Output.leftThrottle*100;
-		Output.returnY = Output.leftAnalogY*100;
-		*/
+
+		//the following (commented out) code is based Etan's preferences for driver control
+		Output.returnX = (Output.CCWRotation*100)-(Output.CWRotation*100);
+		Output.returnY = (ApplyDZ(Output.leftAnalogY / (Output.Turbo ? 1:2), DZ) / (Output.Lift ? 2:1))*100;
+
+		Output.returnRotation = (ApplyDZ(Output.rightAnalogY, DZ));
+		if()
+
 
 
 
 		//doing math for final return values
-		Output.returnX =  ApplyDZ(Output.leftAnalogX / (Output.Turbo ? 1 : 2), DZ) / (Output.LiftSpeed ? 2 : 1);
-		Output.returnY = -ApplyDZ(Output.leftAnalogY / (Output.Turbo ? 1 : 2), DZ) / (Output.LiftSpeed ? 2 : 1);
+		Output.returnX = ApplyDZ(Output.leftAnalogX / (Output.Turbo ? 1 : 2), DZ) / (Output.Lift ? 2 : 1);
+		Output.returnY = ApplyDZ(Output.leftAnalogY / (Output.Turbo ? 1 : 2), DZ) / (Output.Lift ? 2 : 1);
 		Output.returnRotation = stick->GetZ() / (Output.Lift ? 4 : 2);//ApplyDZ(stick->GetZ()/2, DZ);
 
+		Output.returnX *= 100;
+		Output.returnY *= 100;
 
 		if(Output.CCWRotation>0){
 			Output.returnRotate = true;
-			Output.CCWRotation = .5;
+			Output.CCWRotation *= .5;
 		}
 		if(Output.CWRotation>0){
 			Output.returnRotate = true;
-			Output.CCWRotation = -.5;
+			Output.CCWRotation *= -.5;
 		}
 
-		if(Output.buttonA || Output.buttonB || Output.buttonX || Output.buttonY){
-			if(Output.buttonA){
-				Output.returnLift = 0;
-			}
-			if(Output.buttonB){
-				Output.returnLift = .25;
-			}
-			if(Output.buttonX){
-				Output.returnLift = .5;
-			}
-			if(Output.buttonY){
-				Output.returnLift = .75;
-			}
+		if     (Output.buttonA){
+			Output.returnLift = 0;
+		}
+		else if(Output.buttonB){
+			Output.returnLift = .25;
+		}
+		else if(Output.buttonX){
+			Output.returnLift = .5;
+		}
+		else if(Output.buttonY){
+			Output.returnLift = .75;
 		}
 		else{
 			Output.returnLift = Output.LiftX;
 		}
 
 
-
-
-		Output.returnX *= 100;
-		Output.returnY *= 100;
 
 
 		/*
