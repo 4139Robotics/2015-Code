@@ -19,14 +19,16 @@ struct Input_Out
 {
 	// X360Controller
 	float returnX, returnY, returnRotation;
-	bool returnRotateCCW, returnRotateCW;
 	bool returnTurboMode;
+	float returnLiftAmount;
+	float returnLiftActive, returnLiftManualControl;
+	int returnLiftState;
 
 	// Sensors
-	float returnGyroAngle;
-	float returnAccelX, returnAccelY, returnAccelZ;
-	float returnDistance;
-	bool returnUpperLiftSwitch, returnLowerLiftSwitch;
+    float returnGyroAngle;
+    float returnAccelX, returnAccelY, returnAccelZ;
+    float returnDistance;
+    bool returnUpperLiftSwitch, returnLowerLiftSwitch;
 };
 
 class Input
@@ -42,37 +44,34 @@ public:
 		sensors = new Sensors();
 	}
 
-
-	/*
-	Input::~Input()
-	{
-    	delete controller;
-    	delete sensors;
-	}
-	 */
-
 	Input_Out Run(Input_In input)
 	{
 		//Declaring all necessary structs
 		Input_Out output;
+
 		X360Controller_In xbIn;
 		X360Controller_Out xbOut;
 		Sensors_In sensIn;
 		Sensors_Out sensOut;
 
+		sensIn.resetGyro = xbOut.returnResetGyro;
+
 		//Running to obtain necessary information
 		sensOut = sensors->Run(sensIn);
 		xbOut = controller->Run(xbIn);
 
-		//Receiving information from the controller and sensor and returning a struct populated with this info
+		// Controller info
 		output.returnX = xbOut.returnX;
 		output.returnY = xbOut.returnY;
 		output.returnRotation = xbOut.returnRotation;
-		output.returnRotateCCW = xbOut.returnRotateCCW;
-		output.returnRotateCW = xbOut.returnRotateCW;
 		output.returnTurboMode = xbOut.returnTurboMode;
+		output.returnLiftAmount = xbOut.returnLiftAmount;
+		output.returnLiftActive = xbOut.returnLiftActive;
+		output.returnLiftManualControl = xbOut.returnLiftManualControl;
+		output.returnLiftState = xbOut.returnLiftState;
 
-		output.returnGyroAngle = sensOut.returnGyroAngle; //Sensor info
+		//Sensor info
+		output.returnGyroAngle = sensOut.returnGyroAngle;
 		output.returnAccelX = sensOut.returnAccelX;
 		output.returnAccelY = sensOut.returnAccelY;
 		output.returnAccelZ = sensOut.returnAccelZ;

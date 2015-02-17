@@ -11,158 +11,68 @@
 
 struct X360Controller_In
 {
-	//empty piece of trash
+	//
 };
 
 struct X360Controller_Out
 {
-public:
-	float returnX,
-		  returnY,
-		  returnRotation,
-		  returnLift;
-	bool returnRotate;
+	// Wheels
+	float returnX, returnY, returnRotation;
+	bool returnTurboMode;
 
-	//left and right analog sticks
-	float leftAnalogX, //controls movement
-		  leftAnalogY,
-		  LiftX, //controls lift
-		  rightAnalogY,
-		  CCWRotation, //left throttle
-		  CWRotation; //right throttle
+	// Forklift
+	float returnLiftAmount;
+	float returnLiftActive, returnLiftManualControl;
+	int returnLiftState;
 
-	//buttons
-	bool buttonA, //possible lift heights
-	     buttonB,
-		 buttonX,
-		 buttonY,
-		 Turbo, //left bumper
-		 Lift, //right bumper
-		 GyroReset, //back
-		 start;
+	bool returnResetGyro;
 };
 
 class X360Controller
 {
 private:
 	Joystick* stick;
-	X360Controller_Out Output;
-	bool yesMoto,
-		 noMoto;
-
-
 
 public:
-
 	const float DZ = .15;
 
 	X360Controller()
 	{
-		stick = new Joystick(1);
-		Output.returnRotation=0.0; //do some math in run
-		Output.returnRotate=false;
-		Output.Turbo=false;
-		Output.Lift=false;
-		yesMoto = false; //what the hell is this
-		noMoto = false;
+		stick = new Joystick(0);
 	}
+
 	X360Controller_Out Run(X360Controller_In input)
 	{
-		//receiving movement && throttle values and setting
-		Output.leftAnalogX   = stick->GetRawAxis(0);
-		Output.leftAnalogY   = stick->GetRawAxis(1);
-		Output.CCWRotation   = stick->GetRawAxis(2);
-		Output.CWRotation 	 = stick->GetRawAxis(3);
-		Output.LiftX	     = stick->GetRawAxis(4);
-		Output.rightAnalogY  = stick->GetRawAxis(5);
+		X360Controller_Out output;
 
-		//setting buttons to general functions
-		Output.buttonA	    = stick->GetRawButton(1);
-		Output.buttonB	    = stick->GetRawButton(2);
-		Output.buttonX	    = stick->GetRawButton(3);
-		Output.buttonY	    = stick->GetRawButton(4);
-		Output.Turbo 	    = stick->GetRawButton(5);
-		Output.Lift			= stick->GetRawButton(6);
-		Output.GyroReset	= stick->GetRawButton(7);
-		Output.start		= stick->GetRawButton(8);
-
-
-		//the following (commented out) code is based Etan's preferences for driver control
-		Output.returnX = (Output.CCWRotation*100)-(Output.CWRotation*100);
-		Output.returnY = (ApplyDZ(Output.leftAnalogY / (Output.Turbo ? 1:2), DZ) / (Output.Lift ? 2:1))*100;
-
-		Output.returnRotation = (ApplyDZ(Output.rightAnalogY, DZ));
-		if()
-
-
-
-
-		//doing math for final return values
-		Output.returnX = ApplyDZ(Output.leftAnalogX / (Output.Turbo ? 1 : 2), DZ) / (Output.Lift ? 2 : 1);
-		Output.returnY = ApplyDZ(Output.leftAnalogY / (Output.Turbo ? 1 : 2), DZ) / (Output.Lift ? 2 : 1);
-		Output.returnRotation = stick->GetZ() / (Output.Lift ? 4 : 2);//ApplyDZ(stick->GetZ()/2, DZ);
-
-		Output.returnX *= 100;
-		Output.returnY *= 100;
-
-		if(Output.CCWRotation>0){
-			Output.returnRotate = true;
-			Output.CCWRotation *= .5;
-		}
-		if(Output.CWRotation>0){
-			Output.returnRotate = true;
-			Output.CCWRotation *= -.5;
-		}
-
-		if     (Output.buttonA){
-			Output.returnLift = 0;
-		}
-		else if(Output.buttonB){
-			Output.returnLift = .25;
-		}
-		else if(Output.buttonX){
-			Output.returnLift = .5;
-		}
-		else if(Output.buttonY){
-			Output.returnLift = .75;
-		}
-		else{
-			Output.returnLift = Output.LiftX;
-		}
-
-
-
-
-		/*
-		if (Output.returnX || Output.returnY)
+		output.returnX = ApplyDZ(stick->GetRawAxis(0), DZ);
+		output.returnY = -ApplyDZ(stick->GetRawAxis(1), DZ);
+		if(stick->GetRawAxis(2) != 0)
 		{
-			if (yesMoto)
-			{
-			yesMoto = false;
-			noMoto = true;
-			}
-			else if (!noMoto)
-				yesMoto = true;
+			output.returnRotation = -stick->GetRawAxis(2);
 		}
-			else
-				noMoto = false;
-
-		if (yesMoto && !noMoto)
+		else if(stick->GetRawAxis(3) != 0)
 		{
-			if (Output.returnX < 0)
-				Output.returnX = -100;
-			if (Output.returnX > 0)
-				Output.returnX = 100;
+			output.returnRotation = stick->GetRawAxis(3);
+		}
+		output.returnTurboMode = stick->GetRawButton(5);
 
-			if (Output.returnY < 0)
-				Output.returnY = -100;
-			if (Output.returnY > 0)
-				Output.returnY = 100;
-		}*/
+		output.returnLiftAmount = stick->GetRawAxis(5);
+		if(stick->GetRawAxis(5) != 0)
+		{
+			output.returnLiftActive = true;
+			output.returnLiftManualControl = true;
+		}
+		else
+		{
+			output.returnLiftActive = false;
+			output.returnLiftManualControl = false;
+		}
 
-		return Output;
+		output.returnResetGyro = stick->GetRawButton(7);
+
+		return output;
 	}
-
 
 	//signfinder, used for deadzone
 	float findSign(float num)
@@ -175,12 +85,9 @@ public:
 			return 0;
 	}
 
-
 	//Deadzone due to bad controllers
-
 	float ApplyDZ(float axis, float deadzone)
 	{
 		return fabs(axis) < deadzone ? 0 : (fabs(axis) - deadzone) / (1	- deadzone) * findSign(axis);
 	}
-
 };

@@ -50,17 +50,16 @@ private:
 
 		inputOut = input->Run(inputIn);
 
-		inputOut.returnX = outputIn.xMovement;
-		inputOut.returnY = outputIn.yMovement;
-		inputOut.returnRotation = outputIn.rotation;
-		inputOut.returnTurboMode = outputIn.turboMode;
-		inputOut.returnGyroAngle = outputIn.gyroAngle;
-		inputOut.returnAccelX = outputIn.accelX;
-		inputOut.returnAccelY = outputIn.accelY;
-		inputOut.returnAccelZ = outputIn.accelZ;
-		inputOut.returnDistance = outputIn.distance;
-		inputOut.returnUpperLiftSwitch = outputIn.upperLiftSwitch;
-		inputOut.returnLowerLiftSwitch = outputIn.lowerLiftSwitch;
+		outputIn.xMovement = inputOut.returnX;
+		outputIn.yMovement = inputOut.returnY;
+		outputIn.turboMode = inputOut.returnTurboMode;
+		outputIn.rotation = inputOut.returnRotation;
+		outputIn.gyroAngle = inputOut.returnGyroAngle;
+
+		outputIn.liftActive = inputOut.returnLiftActive;
+		outputIn.liftAmount = inputOut.returnLiftAmount;
+		outputIn.liftManualControl = inputOut.returnLiftManualControl;
+		outputIn.liftState = inputOut.returnLiftState;
 
 		outputOut = output->Run(outputIn);
 	}

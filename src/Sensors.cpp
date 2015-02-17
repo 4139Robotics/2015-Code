@@ -10,7 +10,7 @@
 
 struct Sensors_In
 {
-    // nothing
+    bool resetGyro;
 };
 
 struct Sensors_Out
@@ -38,12 +38,18 @@ public:
         upperLift = new DigitalInput(999);
         lowerLift = new DigitalInput(999);
         sonic = new Ultrasonic(999,999);
+        gyro->Reset();
     }
 
     Sensors_Out Run(Sensors_In input)
     {
         Sensors_Out out;
         
+        if(input.resetGyro)
+        {
+        	gyro->Reset();
+        }
+
         out.returnGyroAngle = gyro->GetAngle();
         out.returnAccelX = accel->GetX();
         out.returnAccelY = accel->GetY();
