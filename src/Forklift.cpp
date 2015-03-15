@@ -28,10 +28,11 @@ private:
 	MotorSafetyHelper* safetyOne;
 	MotorSafetyHelper* safetyTwo;
 	float accel;
+	Timer* timer;
 
 public:
 	Forklift()
-	{
+{
 		liftOne = new Talon(4);
 		liftTwo = new Talon(5);
 		liftOne->SetExpiration(0.1);
@@ -41,7 +42,8 @@ public:
 		safetyOne = new MotorSafetyHelper(liftOne);
 		safetyTwo = new MotorSafetyHelper(liftTwo);
 		accel = 0.0;
-	}
+		timer = new Timer();
+}
 
 	Forklift_Out Run(Forklift_In input)
 	{
@@ -52,32 +54,81 @@ public:
 
 		float move = 0.0;
 
-		if(input.liftAmount > 0)
+		if(input.liftManualControl)
 		{
-			move = accel;
-			if(accel < 1)
+			timer->Stop();
+			timer->Reset();
+			if(input.liftAmount > 0)
 			{
-				accel+=0.01-move/100;
+				move = accel;
+				if(accel < 1)
+				{
+					accel+=0.01-move/100;
+				}
+			}
+			else if(input.liftAmount < 0)
+			{
+				move = accel;
+				if(accel > -1)
+				{
+					accel-=0.01+move/100;
+				}
+			}
+			else if(input.liftAmount == 0)
+			{
+				move = accel;
+				if(accel < 0)
+				{
+					accel+=0.01;
+				}
+				else if(accel > 0)
+				{
+					accel -= 0.01;
+				}
 			}
 		}
-		else if(input.liftAmount < 0)
+		else
 		{
-			move = accel;
-			if(accel > -1)
+			timer->Start();
+			if(input.liftState == 1)
 			{
-				accel-=0.01+move/100;
+				move = 0.5;
+				if(timer->HasPeriodPassed(0.2))
+				{
+					move = 0.0;
+					timer->Stop();
+					timer->Reset();
+				}
 			}
-		}
-		else if(input.liftAmount == 0)
-		{
-			move = accel;
-			if(accel < 0)
+			else if(input.liftState == 2)
 			{
-				accel+=0.01;
+				move = 0.5;
+				if(timer->HasPeriodPassed(0.4))
+				{
+					move = 0.0;
+					timer->Stop();
+					timer->Reset();
+				}
 			}
-			else if(accel > 0)
+			else if(input.liftState == 3)
 			{
-				accel -= 0.01;
+				move = 0.5;
+				if(timer->HasPeriodPassed(0.6))
+				{
+					move = 0.0;
+					timer->Stop();
+					timer->Reset();
+				}
+			}
+			else if(input.liftState == 4)
+			{
+				move = 0.5;
+				if(timer->HasPeriodPassed(0.8))
+				{
+					move = 0.0;
+					timer->Stop();
+					timer->Reset();
+				}
 			}
 		}
 
