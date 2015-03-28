@@ -26,8 +26,8 @@ class Sensors
 private:
     Gyro *gyro;
     Accelerometer *accel;
-    DigitalInput *upperLift;
-    DigitalInput *lowerLift;
+    //DigitalInput *upperLift;
+    //DigitalInput *lowerLift;
     Ultrasonic *sonic;
     
 public:
@@ -35,8 +35,8 @@ public:
 	{
         gyro = new Gyro(999);
         accel = new BuiltInAccelerometer(Accelerometer::kRange_4G);
-        upperLift = new DigitalInput(999);
-        lowerLift = new DigitalInput(999);
+        //upperLift = new DigitalInput(999);
+        //lowerLift = new DigitalInput(999);
         sonic = new Ultrasonic(999,999);
         gyro->Reset();
     }
@@ -54,8 +54,8 @@ public:
         out.returnAccelX = accel->GetX();
         out.returnAccelY = accel->GetY();
         out.returnAccelZ = accel->GetZ();
-        out.returnUpperLiftSwitch = upperLift->Get();
-        out.returnLowerLiftSwitch = lowerLift ->Get();
+        //out.returnUpperLiftSwitch = upperLift->Get();
+        //out.returnLowerLiftSwitch = lowerLift ->Get();
         out.returnDistance = sonic->GetRangeInches();
 
         return out;

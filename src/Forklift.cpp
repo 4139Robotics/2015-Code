@@ -32,7 +32,7 @@ private:
 
 public:
 	Forklift()
-{
+	{
 		liftOne = new Talon(4);
 		liftTwo = new Talon(5);
 		liftOne->SetExpiration(0.1);
@@ -43,7 +43,7 @@ public:
 		safetyTwo = new MotorSafetyHelper(liftTwo);
 		accel = 0.0;
 		timer = new Timer();
-}
+	}
 
 	Forklift_Out Run(Forklift_In input)
 	{
