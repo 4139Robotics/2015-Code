@@ -22,6 +22,7 @@ struct X360Controller_Out
 
 	// Forklift
 	float returnLiftAmount;
+	bool returnLiftTurbo;
 	float returnLiftActive, returnLiftManualControl;
 	int returnLiftState;
 
@@ -46,20 +47,27 @@ public:
 		X360Controller_Out output;
 
 		// drive stuff
-		output.returnX = ApplyDZ(stick->GetRawAxis(0), DZ);
-		output.returnY = -ApplyDZ(stick->GetRawAxis(1), DZ);
+		output.returnX = ApplyDZ(stick->GetRawAxis(0), DZ); // left stick x-axis
+		output.returnY = -ApplyDZ(stick->GetRawAxis(1), DZ); // left stick y-axis
+
+		// rotation based on triggers
 		if(stick->GetRawAxis(2) != 0)
 		{
-			output.returnRotation = -stick->GetRawAxis(2);
+			output.returnRotation = stick->GetRawAxis(2);
 		}
 		else if(stick->GetRawAxis(3) != 0)
 		{
-			output.returnRotation = stick->GetRawAxis(3);
+			output.returnRotation = -stick->GetRawAxis(3);
 		}
-		output.returnTurboMode = stick->GetRawButton(5);
+		else if(stick->GetRawAxis(2) == 0 && stick->GetRawAxis(3) == 0)
+		{
+			output.returnRotation = 0;
+		}
+		output.returnTurboMode = stick->GetRawButton(5); // left bumper
 
 		// lift stuff
-		output.returnLiftAmount = ApplyDZ(stick->GetRawAxis(5), DZ);
+		output.returnLiftAmount = ApplyDZ(stick->GetRawAxis(5), DZ); // right stick y-axis
+		output.returnLiftTurbo = stick->GetRawButton(6); // right bumper
 		if(output.returnLiftAmount != 0)
 		{
 			output.returnLiftActive = true;
@@ -72,6 +80,7 @@ public:
 		}
 		if(!output.returnLiftManualControl)
 		{
+			// lift states do anything anymore
 			if(stick->GetRawButton(1))
 			{
 				output.returnLiftState = 1;
@@ -100,7 +109,7 @@ public:
 		return output;
 	}
 
-	//signfinder, used for deadzone
+	// signfinder, used for deadzone
 	float findSign(float num)
 	{
 		if (num > 0)
@@ -111,7 +120,7 @@ public:
 			return 0;
 	}
 
-	//Deadzone due to bad controllers
+	// Deadzone due to bad controllers
 	float ApplyDZ(float axis, float deadzone)
 	{
 		return fabs(axis) < deadzone ? 0 : (fabs(axis) - deadzone) / (1	- deadzone) * findSign(axis);

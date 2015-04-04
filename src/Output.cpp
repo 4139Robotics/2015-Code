@@ -3,7 +3,7 @@
  *  	Takes in various inputs and sends them to the appropriate outputs.
  *
  *  FRC Team 4139 - Easy as Pi
- *  	Author(s):
+ *  	Author(s): Elliot Yoon
  */
 
 #include "WPILib.h"
@@ -19,7 +19,7 @@ struct Output_In
 
 	// Forklift
 	float liftAmount;
-	bool liftManualControl;
+	bool liftTurbo, liftManualControl;
 	int liftState;
 };
 
@@ -59,6 +59,7 @@ public:
 		wOut = wheels->Run(wIn);
 
 		fIn.liftAmount = input.liftAmount;
+		fIn.liftTurbo = input.liftTurbo;
 		fIn.liftManualControl = input.liftManualControl;
 		fIn.liftState = input.liftState;
 

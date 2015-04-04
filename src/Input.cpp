@@ -1,6 +1,6 @@
 /*
  *  Input.cpp
- *  	Sends out various inputs from the controller and sensors..
+ *  	Sends out various inputs from the controller and sensors.
  *
  *  FRC Team 4139 - Easy as Pi
  *  	Author(s): Derek Ta
@@ -22,6 +22,7 @@ struct Input_Out
 	bool returnTurboMode;
 	float returnLiftAmount;
 	float returnLiftActive, returnLiftManualControl;
+	bool returnLiftTurbo;
 	int returnLiftState;
 
 	// Sensors
@@ -46,7 +47,7 @@ public:
 
 	Input_Out Run(Input_In input)
 	{
-		//Declaring all necessary structs
+		// Declaring all necessary structs
 		Input_Out output;
 
 		X360Controller_In xbIn;
@@ -56,7 +57,7 @@ public:
 
 		sensIn.resetGyro = xbOut.returnResetGyro;
 
-		//Running to obtain necessary information
+		// Running to obtain necessary information
 		sensOut = sensors->Run(sensIn);
 		xbOut = controller->Run(xbIn);
 
@@ -66,6 +67,7 @@ public:
 		output.returnRotation = xbOut.returnRotation;
 		output.returnTurboMode = xbOut.returnTurboMode;
 		output.returnLiftAmount = xbOut.returnLiftAmount;
+		output.returnLiftTurbo = xbOut.returnLiftTurbo;
 		output.returnLiftActive = xbOut.returnLiftActive;
 		output.returnLiftManualControl = xbOut.returnLiftManualControl;
 		output.returnLiftState = xbOut.returnLiftState;

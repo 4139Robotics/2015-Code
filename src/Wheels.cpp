@@ -30,7 +30,7 @@ private:
 public:
 	Wheels()
 	{
-		drive = new RobotDrive(0,2,1,3); //frontLeft, rearLeft, frontRight, rearRight
+		drive = new RobotDrive(0,2,4,3); //frontLeft, rearLeft, frontRight, rearRight
 		drive->SetInvertedMotor(RobotDrive::kFrontLeftMotor, true); // 0 is front left wheel
 		drive->SetInvertedMotor(RobotDrive::kRearLeftMotor, true); // 2 is back left wheel
 		drive->SetExpiration(0.1);
@@ -42,13 +42,18 @@ public:
 	{
 		Wheels_Out output;
 
-		driveSafety->Feed();
+		driveSafety->Feed(); // feeding motor safety
 
-		float xMove = input.xMovement / (input.turboMode ?  2 : 1) / (input.liftActive ? 2 : 1);
-		float yMove = input.yMovement / (input.turboMode ?  2 : 1) / (input.liftActive ? 2 : 1);
+		// X movement inverted for new wheel configuration
+		input.liftActive = false; // temporary override
+
+		// motors run at half power unless turbo is activated
+		// motors will be halved again if lift is being used
+		float xMove = -(input.xMovement / (input.turboMode ?  1 : 2) / (input.liftActive ? 2 : 1));
+		float yMove = (input.yMovement / (input.turboMode ?  1 : 2) / (input.liftActive ? 2 : 1));
 		float rotationSpeed = input.rotation;
 
-		drive->MecanumDrive_Cartesian(xMove, yMove, rotationSpeed, input.gyroAngle);
+		drive->MecanumDrive_Cartesian(xMove, yMove, rotationSpeed);//, input.gyroAngle); // no gyro anymore
 		return output;
 	}
 };

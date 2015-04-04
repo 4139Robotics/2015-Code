@@ -133,7 +133,7 @@ private:
 public:
 	VisionProcessing()
 	{
-		camera = new AxisCamera("10.41.39.22");
+		camera = new AxisCamera("10.41.39.11");
 
 		// create images
 		frame = imaqCreateImage(IMAQ_IMAGE_RGB, 0);
