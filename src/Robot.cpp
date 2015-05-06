@@ -93,7 +93,7 @@ private:
 				}
 				break;
 			case 2: // lift box
-				aOutputIn.liftAmount = 0.5;
+				aOutputIn.liftAmount = -0.3;
 				aOutputIn.liftManualControl = true;
 				aOutputIn.yMovement = 0.05;
 				aOutputIn.rotation = autoRotation;
@@ -117,7 +117,7 @@ private:
 				}
 				break;
 			case 4: // put tote down
-				aOutputIn.liftAmount = -0.5;
+				aOutputIn.liftAmount = 0.5;
 				aOutputIn.liftManualControl = true;
 				aOutputIn.yMovement = 0.0;
 				aOutputIn.rotation = autoRotation;
